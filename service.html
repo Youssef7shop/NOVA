@@ -922,8 +922,149 @@
   </footer>
 
 
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+
   <script src="js/app.js"></script>
   <script src="js/service.js"></script>
+
+  <!-- NOVA real order protection -->
+  <script>
+    (function () {
+      "use strict";
+
+      const orderBtn = document.getElementById("orderBtn");
+      if (!orderBtn) return;
+
+      function getServiceId() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("id") || params.get("service");
+      }
+
+      function getSelectedPackage() {
+        const name = document.getElementById("selectedPackageName")?.textContent?.trim() || "Standard";
+        const delivery = document.getElementById("selectedPackageDelivery")?.textContent?.trim() || "";
+        const priceText = document.getElementById("selectedPackagePrice")?.textContent?.trim() || "0";
+        const price = Number(String(priceText).replace(/[^0-9.,-]/g, "").replace(",", "."));
+        return {
+          name,
+          delivery,
+          price: Number.isFinite(price) ? price : 0
+        };
+      }
+
+      function showOrderMessage(message, type) {
+        let box = document.getElementById("novaOrderMessage");
+        if (!box) {
+          box = document.createElement("div");
+          box.id = "novaOrderMessage";
+          box.style.cssText = [
+            "position:fixed",
+            "left:50%",
+            "bottom:24px",
+            "transform:translateX(-50%)",
+            "z-index:99999",
+            "max-width:min(92vw,520px)",
+            "padding:14px 18px",
+            "border-radius:14px",
+            "font-weight:700",
+            "box-shadow:0 12px 35px rgba(0,0,0,.18)",
+            "border:1px solid var(--border)",
+            "background:var(--card)",
+            "color:var(--text)"
+          ].join(";");
+          document.body.appendChild(box);
+        }
+        box.textContent = message;
+        box.style.borderColor = type === "error" ? "#ef4444" : "#22c55e";
+        clearTimeout(window.__novaOrderMessageTimer);
+        window.__novaOrderMessageTimer = setTimeout(() => box.remove(), 5000);
+      }
+
+      async function placeRealOrder() {
+        if (!window.NOVA_SUPABASE) {
+          showOrderMessage("Supabase is not configured. Check js/supabase.js.", "error");
+          return;
+        }
+
+        orderBtn.disabled = true;
+        const originalText = orderBtn.textContent;
+        orderBtn.textContent = "Checking account...";
+
+        try {
+          const { data: sessionData, error: sessionError } =
+            await window.NOVA_SUPABASE.auth.getSession();
+
+          if (sessionError) throw sessionError;
+
+          const session = sessionData?.session;
+
+          if (!session?.user) {
+            const redirect = encodeURIComponent(
+              window.location.pathname + window.location.search
+            );
+            window.location.href = "login.html?redirect=" + redirect;
+            return;
+          }
+
+          const serviceId = getServiceId();
+          if (!serviceId) {
+            throw new Error("Service ID is missing from the URL.");
+          }
+
+          const pkg = getSelectedPackage();
+
+          if (!pkg.price || pkg.price < 0) {
+            throw new Error("Invalid package price.");
+          }
+
+          orderBtn.textContent = "Creating order...";
+
+          const payload = {
+            client_id: session.user.id,
+            service_id: serviceId,
+            total_amount: pkg.price,
+            status: "pending"
+          };
+
+          const { data, error } = await window.NOVA_SUPABASE
+            .from("orders")
+            .insert(payload)
+            .select("id")
+            .single();
+
+          if (error) throw error;
+
+          showOrderMessage("Order created successfully. Opening your orders...", "success");
+
+          setTimeout(() => {
+            window.location.href =
+              "orders.html?order=" + encodeURIComponent(data.id);
+          }, 700);
+
+        } catch (error) {
+          console.error("NOVA order error:", error);
+
+          const msg = error?.message || "Could not create the order.";
+
+          if (msg.toLowerCase().includes("row-level security")) {
+            showOrderMessage(
+              "Order blocked by Supabase RLS. Run the orders policies SQL.",
+              "error"
+            );
+          } else {
+            showOrderMessage(msg, "error");
+          }
+        } finally {
+          orderBtn.disabled = false;
+          orderBtn.textContent = originalText;
+        }
+      }
+
+      orderBtn.addEventListener("click", placeRealOrder);
+    })();
+  </script>
 
 </body>
 </html>
