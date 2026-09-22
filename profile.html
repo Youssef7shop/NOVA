@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>My Profile — NOVA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+
+  <style>
+    .profile-page {
+      min-height: 100vh;
+      padding: 110px 24px 60px;
+    }
+
+    .profile-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      margin-bottom: 28px;
+    }
+
+    .profile-header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .profile-header p {
+      margin: 0;
+      color: var(--muted, #777);
+    }
+
+    .profile-card {
+      background: var(--card, #fff);
+      border: 1px solid var(--border, #e5e7eb);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
+    }
+
+    .profile-cover {
+      height: 150px;
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(124, 92, 255, .35),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 80% 30%,
+          rgba(0, 200, 255, .25),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #111827,
+          #1f2937,
+          #111827
+        );
+    }
+
+    .profile-main {
+      padding: 0 34px 34px;
+    }
+
+    .profile-avatar-area {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: -55px;
+      gap: 20px;
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 5px solid var(--card, #fff);
+      background: linear-gradient(
+        135deg,
+        #111827,
+        #374151
+      );
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 800;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .15);
+      flex-shrink: 0;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, .1);
+      color: #16a34a;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .profile-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .profile-content {
+      margin-top: 25px;
+    }
+
+    .profile-name {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .profile-email {
+      color: var(--muted, #777);
+      font-size: 14px;
+    }
+
+    .form-section {
+      margin-top: 35px;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .form-group input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 15px;
+      border: 1px solid var(--border, #e5e7eb);
+      border-radius: 12px;
+      background: var(--bg, #fff);
+      color: var(--text, #111827);
+      outline: none;
+      font: inherit;
+      transition: .2s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #6366f1;
+      box-shadow:
+        0 0 0 3px rgba(99, 102, 241, .1);
+    }
+
+    .form-group input:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .form-group input[type="file"] {
+      cursor: pointer;
+      padding: 12px;
+    }
+
+    .field-help {
+      font-size: 12px;
+      color: var(--muted, #777);
+      line-height: 1.5;
+    }
+
+    .photo-upload-box {
+      border: 1px dashed var(--border, #d1d5db);
+      border-radius: 16px;
+      padding: 18px;
+      background: var(--bg, #f9fafb);
+    }
+
+    .photo-upload-preview {
+      display: none;
+      align-items: center;
+      gap: 14px;
+      margin-top: 15px;
+    }
+
+    .photo-preview-image {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border, #e5e7eb);
+    }
+
+    .photo-preview-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .photo-preview-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .photo-preview-size {
+      font-size: 12px;
+      color: var(--muted, #777);
+    }
+
+    .profile-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border, #e5e7eb);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      opacity: .92;
+    }
+
+    .btn-secondary {
+      background: var(--bg, #f3f4f6);
+      color: var(--text, #111827);
+      border: 1px solid var(--border, #e5e7eb);
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, .1);
+      color: #15803d;
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, .1);
+      color: #dc2626;
+    }
+
+    .security-box {
+      margin-top: 25px;
+      padding: 18px;
+      border: 1px solid var(--border, #e5e7eb);
+      border-radius: 16px;
+      background: var(--bg, #f9fafb);
+    }
+
+    .security-box h3 {
+      margin: 0 0 7px;
+      font-size: 15px;
+    }
+
+    .security-box p {
+      margin: 0;
+      color: var(--muted, #777);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .loading-state {
+      padding: 70px 20px;
+      text-align: center;
+      color: var(--muted, #777);
+    }
+
+    @media (max-width: 700px) {
+
+      .profile-page {
+        padding: 95px 15px 40px;
+      }
+
+      .profile-header h1 {
+        font-size: 28px;
+      }
+
+      .profile-main {
+        padding: 0 20px 25px;
+      }
+
+      .profile-avatar-area {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .profile-actions {
+        flex-direction: column-reverse;
+      }
+
+      .profile-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================
+       NAVBAR
+  =========================================== -->
+
+  <header class="navbar">
+
+    <div class="nav-container">
+
+      <a href="index.html" class="logo">
+        <span>NOVA</span>
+      </a>
+
+      <nav class="nav-links">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="services.html">
+          Services
+        </a>
+
+        <a href="client/dashboard.html">
+          Dashboard
+        </a>
+
+      </nav>
+
+      <div class="nav-actions">
+
+        <button
+          type="button"
+          id="themeToggle"
+          class="theme-toggle"
+          aria-label="Toggle theme"
+        >
+          ◐
+        </button>
+
+        <button
+          type="button"
+          id="logoutBtn"
+          class="btn btn-secondary"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       PROFILE PAGE
+  =========================================== -->
+
+  <main class="profile-page">
+
+    <div class="profile-container">
+
+      <div class="profile-header">
+
+        <h1>
+          My Profile
+        </h1>
+
+        <p>
+          Manage your NOVA account information.
+        </p>
+
+      </div>
+
+
+      <!-- LOADING -->
+
+      <div
+        id="loadingState"
+        class="profile-card"
+      >
+
+        <div class="loading-state">
+
+          Loading your profile...
+
+        </div>
+
+      </div>
+
+
+      <!-- PROFILE CARD -->
+
+      <section
+        id="profileCard"
+        class="profile-card"
+        style="display:none;"
+      >
+
+        <div class="profile-cover"></div>
+
+
+        <div class="profile-main">
+
+          <!-- AVATAR -->
+
+          <div class="profile-avatar-area">
+
+            <div
+              id="avatar"
+              class="profile-avatar"
+            >
+              N
+            </div>
+
+            <div
+              id="accountStatus"
+              class="profile-status"
+            >
+
+              <span
+                class="profile-status-dot"
+              ></span>
+
+              Active account
+
+            </div>
+
+          </div>
+
+
+          <!-- PROFILE INFO -->
+
+          <div class="profile-content">
+
+            <div
+              id="profileName"
+              class="profile-name"
+            >
+              User
+            </div>
+
+            <div
+              id="profileEmail"
+              class="profile-email"
+            >
+              email@example.com
+            </div>
+
+
+            <!-- ==================================
+                 FORM
+            =================================== -->
+
+            <form id="profileForm">
+
+              <div class="form-section">
+
+                <div class="form-section-title">
+                  Personal information
+                </div>
+
+
+                <div class="form-grid">
+
+
+                  <!-- FIRST NAME -->
+
+                  <div class="form-group">
+
+                    <label for="firstName">
+                      First name
+                    </label>
+
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      maxlength="50"
+                      autocomplete="given-name"
+                      required
+                    />
+
+                  </div>
+
+
+                  <!-- LAST NAME -->
+
+                  <div class="form-group">
+
+                    <label for="lastName">
+                      Last name
+                    </label>
+
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      maxlength="50"
+                      autocomplete="family-name"
+                      required
+                    />
+
+                  </div>
+
+
+                  <!-- EMAIL -->
+
+                  <div class="form-group full">
+
+                    <label for="email">
+                      Email
+                    </label>
+
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      disabled
+                    />
+
+                    <div class="field-help">
+
+                      Your login email is managed by
+                      Supabase Auth.
+
+                    </div>
+
+                  </div>
+
+
+                  <!-- PHONE -->
+
+                  <div class="form-group">
+
+                    <label for="phone">
+                      Phone
+                    </label>
+
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      maxlength="30"
+                      autocomplete="tel"
+                      placeholder="+212..."
+                    />
+
+                  </div>
+
+
+                  <!-- COUNTRY -->
+
+                  <div class="form-group">
+
+                    <label for="country">
+                      Country
+                    </label>
+
+                    <input
+                      id="country"
+                      name="country"
+                      type="text"
+                      maxlength="60"
+                      autocomplete="country-name"
+                      placeholder="Morocco"
+                    />
+
+                  </div>
+
+
+                  <!-- ==================================
+                       PROFILE PHOTO UPLOAD
+                  =================================== -->
+
+                  <div class="form-group full">
+
+                    <label for="avatarFile">
+                      Profile photo
+                    </label>
+
+                    <div class="photo-upload-box">
+
+                      <input
+                        id="avatarFile"
+                        name="avatarFile"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                      />
+
+                      <div class="field-help">
+                        JPG, PNG or WebP.
+                        Maximum size: 5 MB.
+                      </div>
+
+
+                      <!-- PREVIEW -->
+
+                      <div
+                        id="uploadPreview"
+                        class="photo-upload-preview"
+                      >
+
+                        <img
+                          id="uploadPreviewImage"
+                          class="photo-preview-image"
+                          src=""
+                          alt="Selected photo preview"
+                        />
+
+                        <div class="photo-preview-info">
+
+                          <div
+                            id="photoPreviewTitle"
+                            class="photo-preview-title"
+                          >
+                            New profile photo
+                          </div>
+
+                          <div
+                            id="photoPreviewSize"
+                            class="photo-preview-size"
+                          >
+                            Ready to upload
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+              <!-- ==================================
+                   SECURITY
+              =================================== -->
+
+              <div class="security-box">
+
+                <h3>
+                  Account security
+                </h3>
+
+                <p>
+
+                  Your account role and account status
+                  are protected.
+
+                  You cannot change your NOVA role
+                  from this page.
+
+                </p>
+
+              </div>
+
+
+              <!-- MESSAGE -->
+
+              <div
+                id="profileMessage"
+                class="message"
+              ></div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="profile-actions">
+
+                <button
+                  type="button"
+                  id="cancelBtn"
+                  class="btn btn-secondary"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  id="saveBtn"
+                  class="btn btn-primary"
+                >
+                  Save changes
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       SUPABASE
+  =========================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="js/supabase.js"></script>
+
+  <script src="js/app.js"></script>
+
+  <script src="js/auth.js"></script>
+
+
+  <!-- ==========================================
+       PROFILE JAVASCRIPT
+  =========================================== -->
+
+  <script>
+
+    (() => {
+
+      "use strict";
+
+
+      /* ========================================
+         SUPABASE
+      ======================================== */
+
+      const supabase =
+        window.NOVA_SUPABASE;
+
+
+      if (!supabase) {
+
+        console.error(
+          "NOVA_SUPABASE is not configured."
+        );
+
+        return;
+
+      }
+
+
+      /* ========================================
+         ELEMENTS
+      ======================================== */
+
+      const loadingState =
+        document.getElementById(
+          "loadingState"
+        );
+
+      const profileCard =
+        document.getElementById(
+          "profileCard"
+        );
+
+      const avatar =
+        document.getElementById(
+          "avatar"
+        );
+
+      const profileName =
+        document.getElementById(
+          "profileName"
+        );
+
+      const profileEmail =
+        document.getElementById(
+          "profileEmail"
+        );
+
+      const accountStatus =
+        document.getElementById(
+          "accountStatus"
+        );
+
+      const profileForm =
+        document.getElementById(
+          "profileForm"
+        );
+
+      const firstName =
+        document.getElementById(
+          "firstName"
+        );
+
+      const lastName =
+        document.getElementById(
+          "lastName"
+        );
+
+      const email =
+        document.getElementById(
+          "email"
+        );
+
+      const phone =
+        document.getElementById(
+          "phone"
+        );
+
+      const country =
+        document.getElementById(
+          "country"
+        );
+
+      const avatarFile =
+        document.getElementById(
+          "avatarFile"
+        );
+
+      const uploadPreview =
+        document.getElementById(
+          "uploadPreview"
+        );
+
+      const uploadPreviewImage =
+        document.getElementById(
+          "uploadPreviewImage"
+        );
+
+      const photoPreviewTitle =
+        document.getElementById(
+          "photoPreviewTitle"
+        );
+
+      const photoPreviewSize =
+        document.getElementById(
+          "photoPreviewSize"
+        );
+
+      const saveBtn =
+        document.getElementById(
+          "saveBtn"
+        );
+
+      const cancelBtn =
+        document.getElementById(
+          "cancelBtn"
+        );
+
+      const message =
+        document.getElementById(
+          "profileMessage"
+        );
+
+      const logoutBtn =
+        document.getElementById(
+          "logoutBtn"
+        );
+
+
+      let currentProfile = null;
+
+
+      /* ========================================
+         MESSAGE
+      ======================================== */
+
+      function showMessage(
+        text,
+        type = "success"
+      ) {
+
+        message.textContent = text;
+
+        message.className =
+          "message show " + type;
+
+      }
+
+
+      function hideMessage() {
+
+        message.textContent = "";
+
+        message.className =
+          "message";
+
+      }
+
+
+      /* ========================================
+         INITIAL
+      ======================================== */
+
+      function getInitials(profile) {
+
+        const first =
+          (profile.first_name || "")
+            .trim();
+
+        const last =
+          (profile.last_name || "")
+            .trim();
+
+
+        if (first && last) {
+
+          return (
+            first.charAt(0) +
+            last.charAt(0)
+          ).toUpperCase();
+
+        }
+
+
+        if (first) {
+
+          return first
+            .charAt(0)
+            .toUpperCase();
+
+        }
+
+
+        return "N";
+
+      }
+
+
+      /* ========================================
+         AVATAR
+      ======================================== */
+
+      function updateAvatar(profile) {
+
+        const initials =
+          getInitials(profile);
+
+
+        if (profile.avatar_url) {
+
+          avatar.innerHTML = "";
+
+
+          const image =
+            document.createElement("img");
+
+
+          image.src =
+            profile.avatar_url;
+
+          image.alt =
+            "Profile photo";
+
+
+          image.onerror = () => {
+
+            avatar.textContent =
+              initials;
+
+          };
+
+
+          avatar.appendChild(image);
+
+        } else {
+
+          avatar.textContent =
+            initials;
+
+        }
+
+      }
+
+
+      /* ========================================
+         RENDER PROFILE
+      ======================================== */
+
+      function renderProfile(
+        profile,
+        authUser
+      ) {
+
+        currentProfile =
+          profile;
+
+
+        const fullName =
+          `${profile.first_name || ""}
+          ${profile.last_name || ""}`
+            .trim();
+
+
+        profileName.textContent =
+          fullName || "NOVA User";
+
+
+        profileEmail.textContent =
+          profile.email ||
+          authUser?.email ||
+          "";
+
+
+        firstName.value =
+          profile.first_name || "";
+
+
+        lastName.value =
+          profile.last_name || "";
+
+
+        email.value =
+          profile.email ||
+          authUser?.email ||
+          "";
+
+
+        phone.value =
+          profile.phone || "";
+
+
+        country.value =
+          profile.country || "";
+
+
+        updateAvatar(profile);
+
+
+        /* Account status */
+
+        if (profile.is_active) {
+
+          accountStatus.innerHTML = `
+            <span
+              class="profile-status-dot"
+            ></span>
+            Active account
+          `;
+
+          accountStatus.style.color =
+            "#16a34a";
+
+          accountStatus.style.background =
+            "rgba(34,197,94,.1)";
+
+        } else {
+
+          accountStatus.innerHTML = `
+            <span
+              class="profile-status-dot"
+            ></span>
+            Inactive account
+          `;
+
+          accountStatus.style.color =
+            "#dc2626";
+
+          accountStatus.style.background =
+            "rgba(239,68,68,.1)";
+
+        }
+
+      }
+
+
+      /* ========================================
+         LOAD PROFILE
+      ======================================== */
+
+      async function loadProfile() {
+
+        hideMessage();
+
+
+        const {
+          data: {
+            user
+          },
+          error: sessionError
+        } =
+          await supabase.auth.getUser();
+
+
+        if (
+          sessionError ||
+          !user
+        ) {
+
+          window.location.href =
+            "login.html?redirect=profile.html";
+
+          return;
+
+        }
+
+
+        const {
+          data: profile,
+          error
+        } =
+          await supabase
+            .from("profiles")
+            .select(`
+              id,
+              first_name,
+              last_name,
+              email,
+              avatar_url,
+              phone,
+              country,
+              is_email_verified,
+              is_active,
+              role_id,
+              roles (
+                name
+              )
+            `)
+            .eq("id", user.id)
+            .single();
+
+
+        if (error) {
+
+          console.error(
+            "Profile error:",
+            error
+          );
+
+
+          loadingState.innerHTML = `
+            <div class="loading-state">
+
+              <strong>
+                Could not load your profile.
+              </strong>
+
+              <br><br>
+
+              Please check your Supabase
+              configuration and RLS policies.
+
+            </div>
+          `;
+
+          return;
+
+        }
+
+
+        /* Account disabled */
+
+        if (!profile.is_active) {
+
+          await supabase.auth.signOut();
+
+          window.location.href =
+            "login.html?error=account_inactive";
+
+          return;
+
+        }
+
+
+        renderProfile(
+          profile,
+          user
+        );
+
+
+        loadingState.style.display =
+          "none";
+
+        profileCard.style.display =
+          "block";
+
+      }
+
+
+      /* ========================================
+         FILE PREVIEW
+      ======================================== */
+
+      function previewAvatarFile() {
+
+        const file =
+          avatarFile.files[0];
+
+
+        if (!file) {
+
+          uploadPreview.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ];
+
+
+        /* File type */
+
+        if (
+          !allowedTypes.includes(
+            file.type
+          )
+        ) {
+
+          avatarFile.value = "";
+
+          uploadPreview.style.display =
+            "none";
+
+          showMessage(
+            "Only JPG, PNG and WebP images are allowed.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /* File size */
+
+        const maxSize =
+          5 * 1024 * 1024;
+
+
+        if (
+          file.size > maxSize
+        ) {
+
+          avatarFile.value = "";
+
+          uploadPreview.style.display =
+            "none";
+
+          showMessage(
+            "The image must be smaller than 5 MB.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /* Preview */
+
+        const previewUrl =
+          URL.createObjectURL(file);
+
+
+        uploadPreviewImage.src =
+          previewUrl;
+
+
+        photoPreviewTitle.textContent =
+          file.name;
+
+
+        photoPreviewSize.textContent =
+          formatFileSize(
+            file.size
+          );
+
+
+        uploadPreview.style.display =
+          "flex";
+
+
+        hideMessage();
+
+      }
+
+
+      /* ========================================
+         FILE SIZE
+      ======================================== */
+
+      function formatFileSize(bytes) {
+
+        if (bytes < 1024) {
+
+          return bytes + " B";
+
+        }
+
+
+        if (bytes < 1024 * 1024) {
+
+          return (
+            (bytes / 1024)
+              .toFixed(1) +
+            " KB"
+          );
+
+        }
+
+
+        return (
+          (bytes / (
+            1024 * 1024
+          ))
+            .toFixed(2) +
+          " MB"
+        );
+
+      }
+
+
+      /* ========================================
+         UPLOAD AVATAR
+      ======================================== */
+
+      async function uploadAvatar(
+        userId,
+        file
+      ) {
+
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ];
+
+
+        if (
+          !allowedTypes.includes(
+            file.type
+          )
+        ) {
+
+          throw new Error(
+            "Only JPG, PNG and WebP images are allowed."
+          );
+
+        }
+
+
+        const maxSize =
+          5 * 1024 * 1024;
+
+
+        if (
+          file.size > maxSize
+        ) {
+
+          throw new Error(
+            "The image must be smaller than 5 MB."
+          );
+
+        }
+
+
+        /* Get extension */
+
+        let extension = "jpg";
+
+
+        if (
+          file.type ===
+          "image/png"
+        ) {
+
+          extension = "png";
+
+        }
+
+
+        if (
+          file.type ===
+          "image/webp"
+        ) {
+
+          extension = "webp";
+
+        }
+
+
+        /* Unique filename */
+
+        const filePath =
+          `${userId}/${crypto.randomUUID()}.${extension}`;
+
+
+        /* Upload */
+
+        const {
+          error: uploadError
+        } =
+          await supabase.storage
+            .from("avatars")
+            .upload(
+              filePath,
+              file,
+              {
+                cacheControl: "3600",
+                upsert: false,
+                contentType: file.type
+              }
+            );
+
+
+        if (uploadError) {
+
+          console.error(
+            "Storage upload error:",
+            uploadError
+          );
+
+          throw uploadError;
+
+        }
+
+
+        /* Public URL */
+
+        const {
+          data
+        } =
+          supabase.storage
+            .from("avatars")
+            .getPublicUrl(
+              filePath
+            );
+
+
+        if (
+          !data ||
+          !data.publicUrl
+        ) {
+
+          throw new Error(
+            "Could not generate avatar URL."
+          );
+
+        }
+
+
+        return data.publicUrl;
+
+      }
+
+
+      /* ========================================
+         SAVE PROFILE
+      ======================================== */
+
+      async function saveProfile(
+        event
+      ) {
+
+        event.preventDefault();
+
+        hideMessage();
+
+
+        const first =
+          firstName.value.trim();
+
+
+        const last =
+          lastName.value.trim();
+
+
+        const phoneValue =
+          phone.value.trim();
+
+
+        const countryValue =
+          country.value.trim();
+
+
+        /* Validation */
+
+        if (!first) {
+
+          showMessage(
+            "Please enter your first name.",
+            "error"
+          );
+
+          firstName.focus();
+
+          return;
+
+        }
+
+
+        if (!last) {
+
+          showMessage(
+            "Please enter your last name.",
+            "error"
+          );
+
+          lastName.focus();
+
+          return;
+
+        }
+
+
+        saveBtn.disabled =
+          true;
+
+
+        saveBtn.textContent =
+          "Saving...";
+
+
+        try {
+
+          /* Current user */
+
+          const {
+            data: {
+              user
+            },
+            error: userError
+          } =
+            await supabase.auth.getUser();
+
+
+          if (
+            userError ||
+            !user
+          ) {
+
+            throw new Error(
+              "Your session has expired. Please login again."
+            );
+
+          }
+
+
+          /* Existing avatar */
+
+          let newAvatarUrl =
+            currentProfile?.avatar_url ||
+            null;
+
+
+          /* Selected file */
+
+          const selectedFile =
+            avatarFile.files[0];
+
+
+          /* Upload */
+
+          if (selectedFile) {
+
+            saveBtn.textContent =
+              "Uploading photo...";
+
+
+            newAvatarUrl =
+              await uploadAvatar(
+                user.id,
+                selectedFile
+              );
+
+          }
+
+
+          /* Update database */
+
+          saveBtn.textContent =
+            "Saving...";
+
+
+          const {
+            data,
+            error
+          } =
+            await supabase.rpc(
+              "update_my_profile",
+              {
+                p_first_name:
+                  first,
+
+                p_last_name:
+                  last,
+
+                p_avatar_url:
+                  newAvatarUrl,
+
+                p_phone:
+                  phoneValue ||
+                  null,
+
+                p_country:
+                  countryValue ||
+                  null
+              }
+            );
+
+
+          if (error) {
+
+            console.error(
+              "RPC error:",
+              error
+            );
+
+            throw error;
+
+          }
+
+
+          /* Update local profile */
+
+          currentProfile =
+            data;
+
+
+          renderProfile(
+            data,
+            {
+              email:
+                data.email
+            }
+          );
+
+
+          /* Clear file input */
+
+          avatarFile.value =
+            "";
+
+
+          uploadPreview.style.display =
+            "none";
+
+
+          showMessage(
+            "Your profile has been updated successfully.",
+            "success"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Profile update error:",
+            error
+          );
+
+
+          showMessage(
+            error.message ||
+            "Could not update your profile.",
+            "error"
+          );
+
+
+        } finally {
+
+          saveBtn.disabled =
+            false;
+
+
+          saveBtn.textContent =
+            "Save changes";
+
+        }
+
+      }
+
+
+      /* ========================================
+         CANCEL
+      ======================================== */
+
+      function cancelChanges() {
+
+        if (!currentProfile) {
+          return;
+        }
+
+
+        renderProfile(
+          currentProfile,
+          {
+            email:
+              currentProfile.email
+          }
+        );
+
+
+        avatarFile.value =
+          "";
+
+
+        uploadPreview.style.display =
+          "none";
+
+
+        hideMessage();
+
+      }
+
+
+      /* ========================================
+         LOGOUT
+      ======================================== */
+
+      async function logout() {
+
+        logoutBtn.disabled =
+          true;
+
+
+        logoutBtn.textContent =
+          "Logging out...";
+
+
+        const {
+          error
+        } =
+          await supabase.auth.signOut();
+
+
+        if (error) {
+
+          console.error(
+            "Logout error:",
+            error
+          );
+
+
+          logoutBtn.disabled =
+            false;
+
+
+          logoutBtn.textContent =
+            "Logout";
+
+
+          return;
+
+        }
+
+
+        window.location.href =
+          "login.html";
+
+      }
+
+
+      /* ========================================
+         EVENTS
+      ======================================== */
+
+      avatarFile.addEventListener(
+        "change",
+        previewAvatarFile
+      );
+
+
+      profileForm.addEventListener(
+        "submit",
+        saveProfile
+      );
+
+
+      cancelBtn.addEventListener(
+        "click",
+        cancelChanges
+      );
+
+
+      logoutBtn.addEventListener(
+        "click",
+        logout
+      );
+
+
+      /* ========================================
+         START
+      ======================================== */
+
+      loadProfile();
+
+    })();
+
+  </script>
+
+</body>
+</html>
