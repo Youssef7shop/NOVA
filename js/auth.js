@@ -125,23 +125,39 @@
 
 
   // ------------------------------------------------------------
+  // ROLE DASHBOARD
+  // ------------------------------------------------------------
+
+  function getDashboardPath(role) {
+    role = String(role || "client").toLowerCase();
+
+    if (role === "admin") {
+      return "admin/dashboard.html";
+    }
+
+    if (role === "worker") {
+      return "worker/dashboard.html";
+    }
+
+    return "client/dashboard.html";
+  }
+
+
+  // ------------------------------------------------------------
   // DASHBOARD REDIRECT
   // ------------------------------------------------------------
 
   function goAfterLogin(role) {
-    role = String(role || "client").toLowerCase();
+    const dashboard = getDashboardPath(role);
 
-    if (role === "admin") {
-      window.location.href = "admin/dashboard.html";
-      return;
-    }
+    console.log(
+      "NOVA redirect:",
+      role,
+      "→",
+      dashboard
+    );
 
-    if (role === "worker") {
-      window.location.href = "worker/dashboard.html";
-      return;
-    }
-
-    window.location.href = "client/dashboard.html";
+    window.location.replace(dashboard);
   }
 
 
@@ -150,12 +166,15 @@
   // ------------------------------------------------------------
 
   function getRedirectPage() {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(
+      window.location.search
+    );
+
     const redirect = params.get("redirect");
 
     if (!redirect) return null;
 
-    // Security: block external URLs
+    // Block external URLs
     if (
       redirect.startsWith("http://") ||
       redirect.startsWith("https://") ||
@@ -164,7 +183,89 @@
       return null;
     }
 
+    // Block javascript/data URLs
+    if (
+      redirect.startsWith("javascript:") ||
+      redirect.startsWith("data:")
+    ) {
+      return null;
+    }
+
     return redirect;
+  }
+
+
+  // ------------------------------------------------------------
+  // ROLE-SAFE REDIRECT
+  // ------------------------------------------------------------
+
+  function getRoleSafeRedirect(role, redirect) {
+    role = String(role || "client").toLowerCase();
+
+    if (!redirect) {
+      return getDashboardPath(role);
+    }
+
+    const cleanRedirect = redirect
+      .replace(/^\/+/, "")
+      .trim();
+
+    // Never allow auth pages
+    if (
+      cleanRedirect.includes("login.html") ||
+      cleanRedirect.includes("register.html")
+    ) {
+      return getDashboardPath(role);
+    }
+
+    // ----------------------------------------------------------
+    // ADMIN
+    // ----------------------------------------------------------
+
+    if (role === "admin") {
+      if (
+        cleanRedirect === "admin/dashboard.html" ||
+        cleanRedirect.startsWith("admin/")
+      ) {
+        return cleanRedirect;
+      }
+
+      // Admin ALWAYS goes to admin area.
+      return "admin/dashboard.html";
+    }
+
+    // ----------------------------------------------------------
+    // WORKER
+    // ----------------------------------------------------------
+
+    if (role === "worker") {
+      if (
+        cleanRedirect === "worker/dashboard.html" ||
+        cleanRedirect.startsWith("worker/")
+      ) {
+        return cleanRedirect;
+      }
+
+      return "worker/dashboard.html";
+    }
+
+    // ----------------------------------------------------------
+    // CLIENT
+    // ----------------------------------------------------------
+
+    if (role === "client") {
+      // Do not allow client to enter admin/worker area.
+      if (
+        cleanRedirect.startsWith("admin/") ||
+        cleanRedirect.startsWith("worker/")
+      ) {
+        return "client/dashboard.html";
+      }
+
+      return cleanRedirect || "client/dashboard.html";
+    }
+
+    return "client/dashboard.html";
   }
 
 
@@ -202,7 +303,9 @@
     }
 
     if (!password || password.length < 8) {
-      showMessage("Password must contain at least 8 characters.");
+      showMessage(
+        "Password must contain at least 8 characters."
+      );
       return false;
     }
 
@@ -212,28 +315,35 @@
     }
 
     if (!termsAccepted) {
-      showMessage("Please accept the Terms and Conditions.");
+      showMessage(
+        "Please accept the Terms and Conditions."
+      );
       return false;
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+      const { data, error } =
+        await supabase.auth.signUp({
+          email,
+          password,
 
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName
+            }
           }
-        }
-      });
+        });
 
       if (error) {
-        console.error("Registration error:", error);
+        console.error(
+          "Registration error:",
+          error
+        );
 
         showMessage(
-          error.message || "Registration failed."
+          error.message ||
+          "Registration failed."
         );
 
         return false;
@@ -247,13 +357,13 @@
         return false;
       }
 
-
       // --------------------------------------------------------
-      // EMAIL CONFIRMATION DISABLED
+      // SESSION CREATED
       // --------------------------------------------------------
 
       if (data.session) {
-        const profile = await getUserProfile(data.user.id);
+        const profile =
+          await getUserProfile(data.user.id);
 
         if (!profile) {
           showMessage(
@@ -263,7 +373,8 @@
           return false;
         }
 
-        const role = getRoleName(profile);
+        const role =
+          getRoleName(profile);
 
         showMessage(
           "Account created successfully. Redirecting...",
@@ -277,9 +388,10 @@
         return true;
       }
 
+      // --------------------------------------------------------
+      // NO SESSION
+      // --------------------------------------------------------
 
-      // If Supabase doesn't return a session
-      // even though confirmation is disabled
       showMessage(
         "Account created successfully. Please log in.",
         "success"
@@ -292,7 +404,10 @@
       return true;
 
     } catch (error) {
-      console.error("Unexpected registration error:", error);
+      console.error(
+        "Unexpected registration error:",
+        error
+      );
 
       showMessage(
         "Something went wrong. Please try again."
@@ -307,18 +422,27 @@
   // LOGIN
   // ------------------------------------------------------------
 
-  async function loginWithEmail(email, password) {
+  async function loginWithEmail(
+    email,
+    password
+  ) {
     hideMessage();
 
     email = cleanText(email).toLowerCase();
 
     if (!isValidEmail(email)) {
-      showMessage("Please enter a valid email address.");
+      showMessage(
+        "Please enter a valid email address."
+      );
+
       return false;
     }
 
     if (!password) {
-      showMessage("Please enter your password.");
+      showMessage(
+        "Please enter your password."
+      );
+
       return false;
     }
 
@@ -330,15 +454,14 @@
         });
 
       if (error) {
-        console.error("Login error:", error);
-
-        // ------------------------------------------------------
-        // IMPORTANT:
-        // NO EMAIL CONFIRMATION CHECK HERE
-        // ------------------------------------------------------
+        console.error(
+          "Login error:",
+          error
+        );
 
         showMessage(
-          error.message || "Email or password is incorrect."
+          error.message ||
+          "Email or password is incorrect."
         );
 
         return false;
@@ -357,7 +480,10 @@
       // GET PROFILE
       // --------------------------------------------------------
 
-      const profile = await getUserProfile(data.user.id);
+      const profile =
+        await getUserProfile(
+          data.user.id
+        );
 
       if (!profile) {
         showMessage(
@@ -389,37 +515,46 @@
       // ROLE
       // --------------------------------------------------------
 
-      const role = getRoleName(profile);
+      const role =
+        getRoleName(profile);
+
+      console.log(
+        "NOVA logged in:",
+        data.user.email,
+        "ROLE:",
+        role
+      );
 
 
       // --------------------------------------------------------
-      // OPTIONAL REDIRECT
+      // ROLE-SAFE REDIRECT
       // --------------------------------------------------------
 
-      const redirect = getRedirectPage();
+      const requestedRedirect =
+        getRedirectPage();
 
-      if (redirect) {
-        // Only allow internal paths
-        if (
-          !redirect.includes("login.html") &&
-          !redirect.includes("register.html")
-        ) {
-          window.location.href = redirect;
-          return true;
-        }
-      }
+      const destination =
+        getRoleSafeRedirect(
+          role,
+          requestedRedirect
+        );
 
+      console.log(
+        "NOVA login destination:",
+        destination
+      );
 
-      // --------------------------------------------------------
-      // NORMAL DASHBOARD REDIRECT
-      // --------------------------------------------------------
-
-      goAfterLogin(role);
+      window.location.replace(
+        destination
+      );
 
       return true;
 
     } catch (error) {
-      console.error("Unexpected login error:", error);
+      console.error(
+        "Unexpected login error:",
+        error
+      );
 
       showMessage(
         "Something went wrong while logging in."
@@ -438,6 +573,12 @@
     hideMessage();
 
     try {
+      const redirect =
+        getRedirectPage();
+
+      const safeRedirect =
+        redirect || "client/dashboard.html";
+
       const { error } =
         await supabase.auth.signInWithOAuth({
           provider: "google",
@@ -445,15 +586,20 @@
           options: {
             redirectTo:
               window.location.origin +
-              "/client/dashboard.html"
+              "/" +
+              safeRedirect
           }
         });
 
       if (error) {
-        console.error("Google login error:", error);
+        console.error(
+          "Google login error:",
+          error
+        );
 
         showMessage(
-          error.message || "Google login failed."
+          error.message ||
+          "Google login failed."
         );
 
         return false;
@@ -462,7 +608,10 @@
       return true;
 
     } catch (error) {
-      console.error("Unexpected Google login error:", error);
+      console.error(
+        "Unexpected Google login error:",
+        error
+      );
 
       showMessage(
         "Google login failed. Please try again."
@@ -484,7 +633,11 @@
     } = await supabase.auth.getSession();
 
     if (error) {
-      console.error("Session error:", error);
+      console.error(
+        "Session error:",
+        error
+      );
+
       return null;
     }
 
@@ -497,20 +650,26 @@
   // ------------------------------------------------------------
 
   async function requireAuth() {
-    const session = await getSession();
+    const session =
+      await getSession();
 
     if (!session) {
-      const currentPage =
-        window.location.pathname.split("/").pop();
-
-      const currentPath =
+      const pathParts =
         window.location.pathname
           .split("/")
-          .slice(-2)
-          .join("/");
+          .filter(Boolean);
+
+      let currentPath =
+        pathParts.slice(-2).join("/");
+
+      if (!currentPath) {
+        currentPath = "index.html";
+      }
 
       window.location.href =
-        `../login.html?redirect=${encodeURIComponent(currentPath)}`;
+        `../login.html?redirect=${encodeURIComponent(
+          currentPath
+        )}`;
 
       return null;
     }
@@ -524,17 +683,21 @@
   // ------------------------------------------------------------
 
   async function requireClient() {
-    const session = await requireAuth();
+    const session =
+      await requireAuth();
 
     if (!session) return null;
 
     const profile =
-      await getUserProfile(session.user.id);
+      await getUserProfile(
+        session.user.id
+      );
 
     if (!profile) {
       await supabase.auth.signOut();
 
-      window.location.href = "../login.html";
+      window.location.href =
+        "../login.html";
 
       return null;
     }
@@ -548,7 +711,8 @@
       return null;
     }
 
-    const role = getRoleName(profile);
+    const role =
+      getRoleName(profile);
 
     if (role === "worker") {
       window.location.href =
@@ -581,16 +745,25 @@
         await supabase.auth.signOut();
 
       if (error) {
-        console.error("Logout error:", error);
+        console.error(
+          "Logout error:",
+          error
+        );
+
         return false;
       }
 
-      window.location.href = "../index.html";
+      window.location.href =
+        "../index.html";
 
       return true;
 
     } catch (error) {
-      console.error("Unexpected logout error:", error);
+      console.error(
+        "Unexpected logout error:",
+        error
+      );
+
       return false;
     }
   }
@@ -601,10 +774,11 @@
   // ------------------------------------------------------------
 
   const registerForm =
-    document.getElementById("registerForm");
+    document.getElementById(
+      "registerForm"
+    );
 
   if (registerForm) {
-
     registerForm.addEventListener(
       "submit",
       async function (event) {
@@ -612,22 +786,34 @@
         event.preventDefault();
 
         const firstName =
-          document.getElementById("firstName")?.value || "";
+          document.getElementById(
+            "firstName"
+          )?.value || "";
 
         const lastName =
-          document.getElementById("lastName")?.value || "";
+          document.getElementById(
+            "lastName"
+          )?.value || "";
 
         const email =
-          document.getElementById("email")?.value || "";
+          document.getElementById(
+            "email"
+          )?.value || "";
 
         const password =
-          document.getElementById("password")?.value || "";
+          document.getElementById(
+            "password"
+          )?.value || "";
 
         const confirmPassword =
-          document.getElementById("confirmPassword")?.value || "";
+          document.getElementById(
+            "confirmPassword"
+          )?.value || "";
 
         const terms =
-          document.getElementById("terms")?.checked || false;
+          document.getElementById(
+            "terms"
+          )?.checked || false;
 
         const button =
           registerForm.querySelector(
@@ -649,7 +835,10 @@
           terms
         );
 
-        setLoading(button, false);
+        setLoading(
+          button,
+          false
+        );
       }
     );
   }
@@ -660,10 +849,11 @@
   // ------------------------------------------------------------
 
   const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+      "loginForm"
+    );
 
   if (loginForm) {
-
     loginForm.addEventListener(
       "submit",
       async function (event) {
@@ -671,10 +861,14 @@
         event.preventDefault();
 
         const email =
-          document.getElementById("email")?.value || "";
+          document.getElementById(
+            "email"
+          )?.value || "";
 
         const password =
-          document.getElementById("password")?.value || "";
+          document.getElementById(
+            "password"
+          )?.value || "";
 
         const button =
           loginForm.querySelector(
@@ -692,7 +886,10 @@
           password
         );
 
-        setLoading(button, false);
+        setLoading(
+          button,
+          false
+        );
       }
     );
   }
@@ -707,25 +904,30 @@
       "[data-google-login]"
     );
 
-  googleButtons.forEach((button) => {
+  googleButtons.forEach(
+    (button) => {
 
-    button.addEventListener(
-      "click",
-      async function () {
+      button.addEventListener(
+        "click",
+        async function () {
 
-        setLoading(
-          button,
-          true,
-          "Connecting..."
-        );
+          setLoading(
+            button,
+            true,
+            "Connecting..."
+          );
 
-        await loginWithGoogle();
+          await loginWithGoogle();
 
-        setLoading(button, false);
-      }
-    );
+          setLoading(
+            button,
+            false
+          );
+        }
+      );
 
-  });
+    }
+  );
 
 
   // ------------------------------------------------------------
@@ -737,19 +939,21 @@
       "[data-logout]"
     );
 
-  logoutButtons.forEach((button) => {
+  logoutButtons.forEach(
+    (button) => {
 
-    button.addEventListener(
-      "click",
-      async function (event) {
+      button.addEventListener(
+        "click",
+        async function (event) {
 
-        event.preventDefault();
+          event.preventDefault();
 
-        await logout();
-      }
-    );
+          await logout();
+        }
+      );
 
-  });
+    }
+  );
 
 
   // ------------------------------------------------------------
@@ -762,7 +966,8 @@
       console.log(
         "NOVA Auth:",
         event,
-        session?.user?.email || "No user"
+        session?.user?.email ||
+        "No user"
       );
 
     }
@@ -787,7 +992,9 @@
 
     logout,
 
-    goAfterLogin
+    goAfterLogin,
+    getRoleName,
+    getRoleSafeRedirect
 
   };
 
