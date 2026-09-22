@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login — NOVA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-inner">
+
+      <a href="index.html" class="logo">
+        <span class="logo-mark">N</span>
+        <span>NOVA</span>
+      </a>
+
+      <div class="nav-actions">
+
+        <button
+          id="themeToggle"
+          class="icon-btn"
+          type="button"
+          aria-label="Change theme"
+        >
+          ◐
+        </button>
+
+        <a href="register.html" class="btn btn-primary">
+          Create account
+        </a>
+
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- LOGIN -->
+  <main class="auth-page">
+
+    <div class="auth-container">
+
+      <div class="auth-card">
+
+        <!-- HEADER -->
+        <div class="auth-header">
+
+          <div class="auth-logo">
+            N
+          </div>
+
+          <h1>Welcome back</h1>
+
+          <p>
+            Login to your NOVA account.
+          </p>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+        <div
+          id="authMessage"
+          class="auth-message"
+          style="display:none;"
+        ></div>
+
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" class="auth-form">
+
+          <!-- EMAIL -->
+          <div class="form-group">
+
+            <label for="email">
+              Email address
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+
+          </div>
+
+
+          <!-- PASSWORD -->
+          <div class="form-group">
+
+            <div class="password-label">
+
+              <label for="password">
+                Password
+              </label>
+
+              <a href="#" id="forgotPassword">
+                Forgot password?
+              </a>
+
+            </div>
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+
+          </div>
+
+
+          <!-- REMEMBER -->
+          <label class="auth-checkbox">
+
+            <input
+              type="checkbox"
+              id="rememberMe"
+            >
+
+            <span>
+              Remember me
+            </span>
+
+          </label>
+
+
+          <!-- SUBMIT -->
+          <button
+            type="submit"
+            class="btn btn-primary auth-submit"
+          >
+            Login
+          </button>
+
+        </form>
+
+
+        <!-- DIVIDER -->
+        <div class="auth-divider">
+          <span>or continue with</span>
+        </div>
+
+
+        <!-- GOOGLE -->
+        <button
+          type="button"
+          class="btn btn-ghost social-login"
+          data-google-login
+        >
+          <span class="google-icon">G</span>
+          Continue with Google
+        </button>
+
+
+        <!-- REGISTER -->
+        <div class="auth-footer">
+
+          <span>
+            Don't have an account?
+          </span>
+
+          <a href="register.html">
+            Create account
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+
+    <div class="container">
+
+      <div class="footer-bottom">
+
+        <span>
+          © 2026 NOVA. All rights reserved.
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="js/supabase.js"></script>
+
+  <script src="js/app.js"></script>
+
+  <script src="js/auth.js"></script>
+
+</body>
+</html>
