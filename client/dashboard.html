@@ -2,496 +2,159 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard — NOVA</title>
-
-  <meta
-    name="description"
-    content="NOVA client dashboard"
-  >
+  <meta name="description" content="NOVA client dashboard">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
 
   <style>
-    .nova-order-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 15px;
-    }
-
-    .nova-order-card {
-      border: 1px solid rgba(127,127,127,.15);
-      border-radius: 15px;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      background: rgba(127,127,127,.04);
-    }
-
-    .nova-order-left {
-      min-width: 0;
-    }
-
-    .nova-order-title {
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .nova-order-id {
-      font-size: 12px;
-      opacity: .55;
-    }
-
-    .nova-order-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 9px;
-    }
-
-    .nova-order-tag {
-      font-size: 11px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: rgba(127,127,127,.1);
-    }
-
-    .nova-order-right {
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .nova-order-price {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 7px;
-    }
-
-    .nova-status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: capitalize;
-      background: rgba(127,127,127,.12);
-    }
-
-    .nova-status.pending {
-      background: rgba(234,179,8,.15);
-      color: #a16207;
-    }
-
-    .nova-status.paid {
-      background: rgba(59,130,246,.15);
-      color: #2563eb;
-    }
-
-    .nova-status.in_progress {
-      background: rgba(139,92,246,.15);
-      color: #7c3aed;
-    }
-
-    .nova-status.delivered {
-      background: rgba(14,165,233,.15);
-      color: #0284c7;
-    }
-
-    .nova-status.completed {
-      background: rgba(34,197,94,.15);
-      color: #16a34a;
-    }
-
-    .nova-status.cancelled {
-      background: rgba(239,68,68,.15);
-      color: #dc2626;
-    }
-
-    .nova-loading {
-      padding: 25px;
-      text-align: center;
-      opacity: .6;
-    }
-
-    .nova-error {
-      display: none;
-      padding: 13px 15px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      background: rgba(239,68,68,.1);
-      color: #dc2626;
-    }
-
-    .nova-success {
-      display: none;
-      padding: 13px 15px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      background: rgba(34,197,94,.1);
-      color: #16a34a;
-    }
-
-    .nova-buy-box {
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: 15px;
-      background: rgba(127,127,127,.05);
-      border: 1px solid rgba(127,127,127,.12);
-    }
-
-    .nova-buy-box h4 {
-      margin: 0 0 12px;
-    }
-
-    .nova-buy-form {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-    }
-
-    .nova-buy-input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(127,127,127,.2);
-      background: transparent;
-      color: inherit;
-      outline: none;
-    }
-
-    .nova-buy-input:focus {
-      border-color: rgba(99,102,241,.7);
-    }
-
-    .nova-small-note {
-      font-size: 12px;
-      opacity: .55;
-      margin-top: 8px;
-    }
-
-    .nova-order-button {
-      border: 0;
-      cursor: pointer;
-      border-radius: 10px;
-      padding: 10px 15px;
-      font-weight: 700;
-      background: #111827;
-      color: white;
-    }
-
-    .nova-order-button:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 700px) {
-      .nova-order-card {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nova-order-right {
-        text-align: left;
-      }
-
-      .nova-buy-form {
-        grid-template-columns: 1fr;
-      }
+    .dashboard-orders-list{display:grid;gap:12px;margin-top:10px}
+    .dashboard-order{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px;border:1px solid var(--border);border-radius:16px;background:var(--card)}
+    .dashboard-order-main{display:flex;align-items:center;gap:12px;min-width:0}
+    .dashboard-order-icon{width:46px;height:46px;display:grid;place-items:center;border:1px solid var(--border);border-radius:13px;background:var(--bg);font-size:20px;flex:none}
+    .dashboard-order-info{min-width:0}
+    .dashboard-order-info strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .dashboard-order-info span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .dashboard-order-right{text-align:right;white-space:nowrap}
+    .dashboard-order-right strong{display:block}
+    .dashboard-order-right span{display:inline-block;margin-top:5px;padding:4px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-size:11px}
+    .status-pending{color:#b7791f}
+    .status-paid{color:#2563eb}
+    .status-in_progress{color:#7c3aed}
+    .status-delivered{color:#0891b2}
+    .status-completed{color:#16a34a}
+    .status-cancelled{color:#dc2626}
+    .dashboard-error{padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--bg);color:var(--muted);font-size:13px}
+    .dashboard-error strong{display:block;color:var(--text);margin-bottom:5px}
+    .wallet-loading{opacity:.7}
+    @media(max-width:700px){
+      .dashboard-order{align-items:flex-start}
+      .dashboard-order-right{text-align:left}
     }
   </style>
 </head>
 
 <body class="dashboard-page">
 
-  <!-- MOBILE OVERLAY -->
-  <div
-    class="dashboard-overlay"
-    id="dashboardOverlay"
-  ></div>
+  <div class="dashboard-overlay" id="dashboardOverlay"></div>
 
-
-  <!-- SIDEBAR -->
-  <aside
-    class="dashboard-sidebar"
-    id="dashboardSidebar"
-  >
-
+  <aside class="dashboard-sidebar" id="dashboardSidebar">
     <div class="sidebar-top">
-
-      <a
-        href="../index.html"
-        class="dashboard-logo"
-      >
+      <a href="../index.html" class="dashboard-logo">
         <span>N</span>
         <strong>NOVA</strong>
       </a>
 
-      <button
-        type="button"
-        class="sidebar-close"
-        id="sidebarClose"
-        aria-label="Close menu"
-      >
-        ×
-      </button>
-
+      <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
     </div>
 
-
-    <!-- USER -->
     <div class="sidebar-user">
-
-      <div
-        class="user-avatar"
-        id="sidebarAvatar"
-      >
-        U
-      </div>
+      <div class="user-avatar" id="sidebarAvatar">U</div>
 
       <div class="sidebar-user-info">
-
-        <strong id="sidebarUserName">
-          Loading...
-        </strong>
-
-        <span id="sidebarUserEmail">
-          Loading...
-        </span>
-
+        <strong id="sidebarUserName">Loading...</strong>
+        <span id="sidebarUserEmail">Loading...</span>
       </div>
-
     </div>
 
-
-    <!-- NAVIGATION -->
     <nav class="dashboard-nav">
+      <p class="nav-title">MAIN</p>
 
-      <p class="nav-title">
-        MAIN
-      </p>
-
-      <a
-        href="#overview"
-        class="dashboard-nav-link active"
-        data-section="overview"
-      >
+      <a href="#overview" class="dashboard-nav-link active" data-section="overview">
         <span class="nav-icon">⌂</span>
         <span>Overview</span>
       </a>
 
-      <a
-        href="#orders"
-        class="dashboard-nav-link"
-        data-section="orders"
-      >
+      <a href="#orders" class="dashboard-nav-link" data-section="orders">
         <span class="nav-icon">▣</span>
         <span>My Orders</span>
       </a>
 
-      <a
-        href="#messages"
-        class="dashboard-nav-link"
-        data-section="messages"
-      >
+      <a href="#messages" class="dashboard-nav-link" data-section="messages">
         <span class="nav-icon">✉</span>
         <span>Messages</span>
       </a>
 
-      <a
-        href="#favorites"
-        class="dashboard-nav-link"
-        data-section="favorites"
-      >
+      <a href="#favorites" class="dashboard-nav-link" data-section="favorites">
         <span class="nav-icon">♡</span>
         <span>Favorites</span>
       </a>
 
+      <p class="nav-title">ACCOUNT</p>
 
-      <p class="nav-title">
-        ACCOUNT
-      </p>
-
-      <a
-        href="#wallet"
-        class="dashboard-nav-link"
-        data-section="wallet"
-      >
+      <a href="#wallet" class="dashboard-nav-link" data-section="wallet">
         <span class="nav-icon">◈</span>
         <span>Wallet</span>
       </a>
 
-      <a
-        href="#profile"
-        class="dashboard-nav-link"
-        data-section="profile"
-      >
+      <a href="#profile" class="dashboard-nav-link" data-section="profile">
         <span class="nav-icon">◉</span>
         <span>My Profile</span>
       </a>
 
-      <a
-        href="#support"
-        class="dashboard-nav-link"
-        data-section="support"
-      >
+      <a href="#support" class="dashboard-nav-link" data-section="support">
         <span class="nav-icon">?</span>
         <span>Support</span>
       </a>
-
     </nav>
 
-
-    <!-- SIDEBAR BOTTOM -->
     <div class="sidebar-bottom">
-
-      <a
-        href="../services.html"
-        class="sidebar-services-link"
-      >
+      <a href="../services.html" class="sidebar-services-link">
         <span>＋</span>
         Find a Service
       </a>
 
-      <button
-        type="button"
-        class="sidebar-logout"
-        data-logout
-      >
+      <button type="button" class="sidebar-logout" data-logout>
         <span>↪</span>
         Logout
       </button>
-
     </div>
-
   </aside>
 
-
-  <!-- MAIN -->
   <main class="dashboard-main">
 
-    <!-- TOPBAR -->
     <header class="dashboard-topbar">
-
       <div class="topbar-left">
-
-        <button
-          type="button"
-          class="mobile-menu-button"
-          id="mobileMenuButton"
-          aria-label="Open menu"
-        >
-          ☰
-        </button>
+        <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Open menu">☰</button>
 
         <div>
-
-          <p class="topbar-label">
-            Client Dashboard
-          </p>
-
-          <h1 id="pageTitle">
-            Overview
-          </h1>
-
+          <p class="topbar-label">Client Dashboard</p>
+          <h1 id="pageTitle">Overview</h1>
         </div>
-
       </div>
 
-
       <div class="topbar-right">
+        <button type="button" class="dashboard-icon-button" id="themeToggle" aria-label="Toggle theme">◐</button>
 
-        <button
-          type="button"
-          class="dashboard-icon-button"
-          id="themeToggle"
-          aria-label="Toggle theme"
-        >
-          ◐
-        </button>
-
-        <button
-          type="button"
-          class="dashboard-icon-button notification-button"
-          id="notificationButton"
-          aria-label="Notifications"
-        >
+        <button type="button" class="dashboard-icon-button notification-button" id="notificationButton" aria-label="Notifications">
           ♢
           <span class="notification-dot"></span>
         </button>
 
         <div class="topbar-user">
-
-          <div
-            class="user-avatar small"
-            id="topbarAvatar"
-          >
-            U
-          </div>
+          <div class="user-avatar small" id="topbarAvatar">U</div>
 
           <div class="topbar-user-info">
-
-            <strong id="topbarUserName">
-              Loading...
-            </strong>
-
-            <span>
-              Client
-            </span>
-
+            <strong id="topbarUserName">Loading...</strong>
+            <span>Client</span>
           </div>
-
         </div>
-
       </div>
-
     </header>
 
-
-    <!-- CONTENT -->
     <div class="dashboard-content">
 
-      <!-- ERROR / SUCCESS -->
-      <div
-        class="nova-error"
-        id="novaError"
-      ></div>
-
-      <div
-        class="nova-success"
-        id="novaSuccess"
-      ></div>
-
-
-      <!-- OVERVIEW -->
-      <section
-        class="dashboard-section active"
-        id="section-overview"
-      >
+      <section class="dashboard-section active" id="section-overview">
 
         <div class="welcome-card">
-
           <div class="welcome-content">
-
-            <span class="welcome-badge">
-              NOVA CLIENT
-            </span>
+            <span class="welcome-badge">NOVA CLIENT</span>
 
             <h2>
               Welcome back,
@@ -501,2405 +164,1024 @@
 
             <p>
               Find digital services, manage your orders,
-              communicate with workers and track everything
-              from one place.
+              communicate with workers and track everything from one place.
             </p>
 
-            <a
-              href="../services.html"
-              class="dashboard-primary-button"
-            >
-              Explore Services
-              <span>→</span>
+            <a href="../services.html" class="dashboard-primary-button">
+              Explore Services <span>→</span>
             </a>
-
           </div>
 
-          <div class="welcome-decoration">
-            NOVA
-          </div>
-
+          <div class="welcome-decoration">NOVA</div>
         </div>
 
-
-        <!-- STATS -->
         <div class="dashboard-stats">
-
           <div class="stat-card">
-
-            <div class="stat-icon">
-              ▣
-            </div>
-
+            <div class="stat-icon">▣</div>
             <div>
-              <span class="stat-label">
-                Total Orders
-              </span>
-
-              <strong id="totalOrders">
-                0
-              </strong>
+              <span class="stat-label">Total Orders</span>
+              <strong id="totalOrders">0</strong>
             </div>
-
           </div>
 
-
           <div class="stat-card">
-
-            <div class="stat-icon">
-              ◷
-            </div>
-
+            <div class="stat-icon">◷</div>
             <div>
-              <span class="stat-label">
-                Active Orders
-              </span>
-
-              <strong id="activeOrders">
-                0
-              </strong>
+              <span class="stat-label">Active Orders</span>
+              <strong id="activeOrders">0</strong>
             </div>
-
           </div>
 
-
           <div class="stat-card">
-
-            <div class="stat-icon">
-              ✓
-            </div>
-
+            <div class="stat-icon">✓</div>
             <div>
-              <span class="stat-label">
-                Completed
-              </span>
-
-              <strong id="completedOrders">
-                0
-              </strong>
+              <span class="stat-label">Completed</span>
+              <strong id="completedOrders">0</strong>
             </div>
-
           </div>
 
-
           <div class="stat-card">
-
-            <div class="stat-icon">
-              ◈
-            </div>
-
+            <div class="stat-icon">◈</div>
             <div>
-              <span class="stat-label">
-                Wallet Balance
-              </span>
-
-              <strong id="walletBalance">
-                0 MAD
-              </strong>
+              <span class="stat-label">Wallet Balance</span>
+              <strong id="walletBalance">0 MAD</strong>
             </div>
-
           </div>
-
         </div>
 
-
-        <!-- GRID -->
         <div class="dashboard-grid">
 
-          <!-- RECENT ORDERS -->
           <div class="dashboard-card large-card">
-
             <div class="card-header">
-
               <div>
-
-                <span class="card-eyebrow">
-                  ACTIVITY
-                </span>
-
-                <h3>
-                  Recent Orders
-                </h3>
-
+                <span class="card-eyebrow">ACTIVITY</span>
+                <h3>Recent Orders</h3>
               </div>
 
-              <button
-                type="button"
-                class="card-link"
-                data-section-target="orders"
-              >
+              <button type="button" class="card-link" data-section-target="orders">
                 View all
               </button>
-
             </div>
 
-            <div
-              id="recentOrdersLoading"
-              class="nova-loading"
-            >
-              Loading orders...
-            </div>
-
-            <div
-              id="recentOrdersList"
-              class="nova-order-list"
-            ></div>
-
-            <div
-              class="empty-state compact"
-              id="recentOrdersEmpty"
-              style="display:none;"
-            >
-
-              <div class="empty-icon">
-                ▣
+            <div id="recentOrders">
+              <div class="empty-state compact" id="recentOrdersEmpty">
+                <div class="empty-icon">▣</div>
+                <h4>No orders yet</h4>
+                <p>Your recent orders will appear here.</p>
+                <a href="../services.html" class="dashboard-secondary-button">Browse Services</a>
               </div>
-
-              <h4>
-                No orders yet
-              </h4>
-
-              <p>
-                Your recent orders will appear here.
-              </p>
-
-              <a
-                href="../services.html"
-                class="dashboard-secondary-button"
-              >
-                Browse Services
-              </a>
-
             </div>
-
           </div>
 
-
-          <!-- PROFILE -->
           <div class="dashboard-card profile-summary-card">
-
             <div class="card-header">
-
               <div>
-
-                <span class="card-eyebrow">
-                  ACCOUNT
-                </span>
-
-                <h3>
-                  My Profile
-                </h3>
-
+                <span class="card-eyebrow">ACCOUNT</span>
+                <h3>My Profile</h3>
               </div>
 
-              <button
-                type="button"
-                class="card-link"
-                data-section-target="profile"
-              >
+              <button type="button" class="card-link" data-section-target="profile">
                 Edit
               </button>
-
             </div>
-
 
             <div class="profile-summary">
-
-              <div
-                class="profile-big-avatar"
-                id="profileSummaryAvatar"
-              >
-                U
-              </div>
-
-              <h4 id="profileSummaryName">
-                Loading...
-              </h4>
-
-              <p id="profileSummaryEmail">
-                Loading...
-              </p>
-
-              <span
-                class="account-status"
-                id="accountStatus"
-              >
-                Active
-              </span>
-
+              <div class="profile-big-avatar" id="profileSummaryAvatar">U</div>
+              <h4 id="profileSummaryName">Loading...</h4>
+              <p id="profileSummaryEmail">Loading...</p>
+              <span class="account-status" id="accountStatus">Active</span>
             </div>
-
           </div>
 
         </div>
 
-
-        <!-- QUICK ACTIONS -->
         <div class="dashboard-card">
-
           <div class="card-header">
-
             <div>
-
-              <span class="card-eyebrow">
-                QUICK ACTIONS
-              </span>
-
-              <h3>
-                What would you like to do?
-              </h3>
-
+              <span class="card-eyebrow">QUICK ACTIONS</span>
+              <h3>What would you like to do?</h3>
             </div>
-
           </div>
-
 
           <div class="quick-actions">
 
-            <a
-              href="../services.html"
-              class="quick-action"
-            >
-
-              <span class="quick-action-icon">
-                🔎
-              </span>
-
+            <a href="../services.html" class="quick-action">
+              <span class="quick-action-icon">🔎</span>
               <div>
-
-                <strong>
-                  Find a Service
-                </strong>
-
-                <span>
-                  Browse available services
-                </span>
-
+                <strong>Find a Service</strong>
+                <span>Browse available services</span>
               </div>
-
             </a>
 
-
-            <button
-              type="button"
-              class="quick-action"
-              data-section-target="orders"
-            >
-
-              <span class="quick-action-icon">
-                📦
-              </span>
-
+            <button type="button" class="quick-action" data-section-target="orders">
+              <span class="quick-action-icon">📦</span>
               <div>
-
-                <strong>
-                  My Orders
-                </strong>
-
-                <span>
-                  Track your orders
-                </span>
-
+                <strong>My Orders</strong>
+                <span>Track your orders</span>
               </div>
-
             </button>
 
-
-            <button
-              type="button"
-              class="quick-action"
-              data-section-target="messages"
-            >
-
-              <span class="quick-action-icon">
-                💬
-              </span>
-
+            <button type="button" class="quick-action" data-section-target="messages">
+              <span class="quick-action-icon">💬</span>
               <div>
-
-                <strong>
-                  Messages
-                </strong>
-
-                <span>
-                  Chat with workers
-                </span>
-
+                <strong>Messages</strong>
+                <span>Chat with workers</span>
               </div>
-
             </button>
 
-
-            <button
-              type="button"
-              class="quick-action"
-              data-section-target="support"
-            >
-
-              <span class="quick-action-icon">
-                🛟
-              </span>
-
+            <button type="button" class="quick-action" data-section-target="support">
+              <span class="quick-action-icon">🛟</span>
               <div>
-
-                <strong>
-                  Get Support
-                </strong>
-
-                <span>
-                  Contact NOVA support
-                </span>
-
+                <strong>Get Support</strong>
+                <span>Contact NOVA support</span>
               </div>
-
             </button>
 
           </div>
-
         </div>
-
       </section>
 
-
-      <!-- ORDERS -->
-      <section
-        class="dashboard-section"
-        id="section-orders"
-      >
-
+      <section class="dashboard-section" id="section-orders">
         <div class="section-page-header">
-
           <div>
-
-            <span class="card-eyebrow">
-              MARKETPLACE
-            </span>
-
-            <h2>
-              My Orders
-            </h2>
-
-            <p>
-              Manage and track all your NOVA orders.
-            </p>
-
+            <span class="card-eyebrow">MARKETPLACE</span>
+            <h2>My Orders</h2>
+            <p>Manage and track all your NOVA orders.</p>
           </div>
 
-          <a
-            href="../services.html"
-            class="dashboard-primary-button"
-          >
-            Find a Service
-          </a>
-
+          <a href="../services.html" class="dashboard-primary-button">Find a Service</a>
         </div>
 
+        <div class="dashboard-card">
+          <div id="allOrders">
+            <div class="empty-state" id="ordersEmpty">
+              <div class="empty-icon">📦</div>
+              <h3>No orders yet</h3>
+              <p>You haven't placed an order yet.</p>
+              <a href="../services.html" class="dashboard-primary-button">Browse Services</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-messages">
+        <div class="section-page-header">
+          <div>
+            <span class="card-eyebrow">COMMUNICATION</span>
+            <h2>Messages</h2>
+            <p>Your conversations with NOVA workers.</p>
+          </div>
+        </div>
 
         <div class="dashboard-card">
+          <div class="empty-state">
+            <div class="empty-icon">💬</div>
+            <h3>No conversations</h3>
+            <p>Your conversations will appear here when you contact a worker or place an order.</p>
+          </div>
+        </div>
+      </section>
 
-          <div
-            id="allOrdersLoading"
-            class="nova-loading"
-          >
-            Loading your orders...
+      <section class="dashboard-section" id="section-favorites">
+        <div class="section-page-header">
+          <div>
+            <span class="card-eyebrow">SAVED</span>
+            <h2>Favorites</h2>
+            <p>Services you've saved for later.</p>
           </div>
 
-          <div
-            id="allOrdersList"
-            class="nova-order-list"
-          ></div>
+          <a href="../services.html" class="dashboard-secondary-button">Browse Services</a>
+        </div>
 
-          <div
-            class="empty-state"
-            id="allOrdersEmpty"
-            style="display:none;"
-          >
+        <div class="dashboard-card">
+          <div class="empty-state">
+            <div class="empty-icon">♡</div>
+            <h3>No favorites yet</h3>
+            <p>Save services you like and find them here later.</p>
+            <a href="../services.html" class="dashboard-primary-button">Explore Services</a>
+          </div>
+        </div>
+      </section>
 
-            <div class="empty-icon">
-              📦
+      <section class="dashboard-section" id="section-wallet">
+        <div class="section-page-header">
+          <div>
+            <span class="card-eyebrow">FINANCE</span>
+            <h2>Wallet</h2>
+            <p>Manage your NOVA wallet and transactions.</p>
+          </div>
+        </div>
+
+        <div class="wallet-balance-card">
+          <div>
+            <span>Available Balance</span>
+            <strong id="walletMainBalance">0 MAD</strong>
+          </div>
+
+          <div class="wallet-icon">◈</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <div>
+              <span class="card-eyebrow">TRANSACTIONS</span>
+              <h3>Transaction History</h3>
+            </div>
+          </div>
+
+          <div class="empty-state compact">
+            <div class="empty-icon">◈</div>
+            <h4>No transactions</h4>
+            <p>Your wallet transactions will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-profile">
+        <div class="section-page-header">
+          <div>
+            <span class="card-eyebrow">ACCOUNT</span>
+            <h2>My Profile</h2>
+            <p>View your account information.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-card profile-details-card">
+
+          <div class="profile-details-header">
+            <div class="profile-big-avatar" id="profileAvatar">U</div>
+
+            <div>
+              <h3 id="profileFullName">Loading...</h3>
+              <p id="profileEmail">Loading...</p>
+              <span class="account-status">Active Account</span>
+            </div>
+          </div>
+
+          <div class="profile-info-grid">
+
+            <div class="profile-info-item">
+              <span>First name</span>
+              <strong id="profileFirstName">—</strong>
             </div>
 
-            <h3>
-              No orders yet
-            </h3>
+            <div class="profile-info-item">
+              <span>Last name</span>
+              <strong id="profileLastName">—</strong>
+            </div>
 
-            <p>
-              You haven't placed an order yet.
-              Browse our services and start your first project.
-            </p>
+            <div class="profile-info-item">
+              <span>Email</span>
+              <strong id="profileEmailDetail">—</strong>
+            </div>
 
+            <div class="profile-info-item">
+              <span>Country</span>
+              <strong id="profileCountry">—</strong>
+            </div>
+
+            <div class="profile-info-item">
+              <span>Account type</span>
+              <strong>Client</strong>
+            </div>
+
+            <div class="profile-info-item">
+              <span>Email verification</span>
+              <strong id="profileVerification">Checking...</strong>
+            </div>
+
+          </div>
+
+          <div class="profile-note">
+            <strong>Profile editing</strong>
+            <p>Your profile information is loaded directly from your secure NOVA account.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-support">
+        <div class="section-page-header">
+          <div>
+            <span class="card-eyebrow">HELP CENTER</span>
+            <h2>Support</h2>
+            <p>Need help with your NOVA account or order?</p>
+          </div>
+        </div>
+
+        <div class="support-grid">
+
+          <div class="dashboard-card support-card">
+            <div class="support-icon">📦</div>
+            <h3>Order Support</h3>
+            <p>Get help with an order, delivery or revision.</p>
+            <button type="button" class="dashboard-secondary-button">Coming Soon</button>
+          </div>
+
+          <div class="dashboard-card support-card">
+            <div class="support-icon">💳</div>
+            <h3>Payment Support</h3>
+            <p>Questions about payments, refunds or wallet.</p>
+            <button type="button" class="dashboard-secondary-button">Coming Soon</button>
+          </div>
+
+          <div class="dashboard-card support-card">
+            <div class="support-icon">💬</div>
+            <h3>Contact Support</h3>
+            <p>Open a support ticket with the NOVA team.</p>
+            <button type="button" class="dashboard-secondary-button">Coming Soon</button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/auth.js"></script>
+
+  <script>
+  "use strict";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+
+    const supabase = window.NOVA_SUPABASE;
+
+    if (!supabase) {
+      console.error("NOVA: Supabase is not initialized.");
+      return;
+    }
+
+    const $ = (id) => document.getElementById(id);
+
+    const sidebar = $("dashboardSidebar");
+    const overlay = $("dashboardOverlay");
+    const mobileMenuButton = $("mobileMenuButton");
+    const sidebarClose = $("sidebarClose");
+    const navLinks = document.querySelectorAll(".dashboard-nav-link");
+    const sections = document.querySelectorAll(".dashboard-section");
+    const pageTitle = $("pageTitle");
+
+    function setText(id, value) {
+      const el = $(id);
+      if (el) el.textContent = value ?? "";
+    }
+
+    function getInitials(first, last, email) {
+      const a = first?.trim()?.charAt(0) || "";
+      const b = last?.trim()?.charAt(0) || "";
+
+      if (a || b) return (a + b).toUpperCase();
+
+      return (email?.charAt(0) || "U").toUpperCase();
+    }
+
+    function setAvatar(id, initials, avatarUrl) {
+      const el = $(id);
+      if (!el) return;
+
+      if (avatarUrl) {
+        el.style.backgroundImage = `url("${avatarUrl}")`;
+        el.style.backgroundSize = "cover";
+        el.style.backgroundPosition = "center";
+        el.textContent = "";
+      } else {
+        el.style.backgroundImage = "none";
+        el.textContent = initials;
+      }
+    }
+
+    function formatMoney(value) {
+      const amount = Number(value || 0);
+
+      return new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(amount) + " MAD";
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) return "—";
+
+      return date.toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function statusLabel(status) {
+      return String(status || "pending")
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function showError(containerId, message) {
+      const container = $(containerId);
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="dashboard-error">
+          <strong>Could not load data</strong>
+          <span>${escapeHtml(message || "Unknown error")}</span>
+        </div>
+      `;
+    }
+
+    /* AUTH */
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError || !sessionData?.session) {
+      window.location.href =
+        "../login.html?redirect=client/dashboard.html";
+      return;
+    }
+
+    const user = sessionData.session.user;
+
+    /* PROFILE */
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("profiles")
+        .select(`
+          id,
+          first_name,
+          last_name,
+          email,
+          avatar_url,
+          phone,
+          country,
+          is_email_verified,
+          is_active,
+          role_id,
+          roles (
+            name
+          )
+        `)
+        .eq("id", user.id)
+        .single();
+
+    if (profileError || !profile) {
+      console.error("NOVA profile error:", profileError);
+      alert("We couldn't load your NOVA profile.");
+      return;
+    }
+
+    if (!profile.is_active) {
+      await supabase.auth.signOut();
+      window.location.href = "../login.html";
+      return;
+    }
+
+    const role = profile.roles?.name || "client";
+
+    if (role !== "client") {
+      if (role === "worker") {
+        window.location.href = "../worker/dashboard.html";
+      } else if (role === "admin") {
+        window.location.href = "../admin/dashboard.html";
+      } else {
+        window.location.href = "../login.html";
+      }
+      return;
+    }
+
+    const firstName =
+      profile.first_name ||
+      user.user_metadata?.first_name ||
+      "User";
+
+    const lastName =
+      profile.last_name ||
+      user.user_metadata?.last_name ||
+      "";
+
+    const fullName =
+      `${firstName} ${lastName}`.trim();
+
+    const email =
+      profile.email ||
+      user.email ||
+      "";
+
+    const initials =
+      getInitials(firstName, lastName, email);
+
+    /* PROFILE UI */
+    setText("sidebarUserName", fullName);
+    setText("sidebarUserEmail", email);
+    setText("topbarUserName", fullName);
+    setText("welcomeName", firstName);
+
+    setText("profileSummaryName", fullName);
+    setText("profileSummaryEmail", email);
+
+    setText("profileFullName", fullName);
+    setText("profileEmail", email);
+    setText("profileFirstName", firstName);
+    setText("profileLastName", lastName);
+    setText("profileEmailDetail", email);
+    setText("profileCountry", profile.country || "Not set");
+
+    const verified =
+      !!profile.is_email_verified ||
+      !!user.email_confirmed_at;
+
+    setText(
+      "profileVerification",
+      verified ? "Verified ✓" : "Not verified"
+    );
+
+    setText(
+      "accountStatus",
+      profile.is_active ? "Active" : "Inactive"
+    );
+
+    setAvatar("sidebarAvatar", initials, profile.avatar_url);
+    setAvatar("topbarAvatar", initials, profile.avatar_url);
+    setAvatar("profileSummaryAvatar", initials, profile.avatar_url);
+    setAvatar("profileAvatar", initials, profile.avatar_url);
+
+    /* THEME */
+    const savedTheme =
+      localStorage.getItem("nova-theme");
+
+    if (savedTheme === "light") {
+      document.body.classList.add("light-theme");
+    }
+
+    $("themeToggle")?.addEventListener("click", () => {
+      document.body.classList.toggle("light-theme");
+
+      localStorage.setItem(
+        "nova-theme",
+        document.body.classList.contains("light-theme")
+          ? "light"
+          : "dark"
+      );
+    });
+
+    /* MOBILE SIDEBAR */
+    function openSidebar() {
+      sidebar?.classList.add("open");
+      overlay?.classList.add("open");
+    }
+
+    function closeSidebar() {
+      sidebar?.classList.remove("open");
+      overlay?.classList.remove("open");
+    }
+
+    mobileMenuButton?.addEventListener("click", openSidebar);
+    sidebarClose?.addEventListener("click", closeSidebar);
+    overlay?.addEventListener("click", closeSidebar);
+
+    /* SECTIONS */
+    function showSection(sectionName) {
+      const valid = [
+        "overview",
+        "orders",
+        "messages",
+        "favorites",
+        "wallet",
+        "profile",
+        "support"
+      ];
+
+      if (!valid.includes(sectionName)) {
+        sectionName = "overview";
+      }
+
+      sections.forEach((section) => {
+        section.classList.remove("active");
+      });
+
+      const target =
+        $(`section-${sectionName}`);
+
+      target?.classList.add("active");
+
+      navLinks.forEach((link) => {
+        link.classList.toggle(
+          "active",
+          link.dataset.section === sectionName
+        );
+      });
+
+      const titles = {
+        overview: "Overview",
+        orders: "My Orders",
+        messages: "Messages",
+        favorites: "Favorites",
+        wallet: "Wallet",
+        profile: "My Profile",
+        support: "Support"
+      };
+
+      if (pageTitle) {
+        pageTitle.textContent =
+          titles[sectionName] || "Dashboard";
+      }
+
+      history.replaceState(
+        null,
+        "",
+        `#${sectionName}`
+      );
+
+      closeSidebar();
+    }
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        showSection(link.dataset.section);
+      });
+    });
+
+    document
+      .querySelectorAll("[data-section-target]")
+      .forEach((button) => {
+        button.addEventListener("click", () => {
+          showSection(button.dataset.sectionTarget);
+        });
+      });
+
+    const initialSection =
+      location.hash.replace("#", "").trim();
+
+    showSection(initialSection || "overview");
+
+    /* ORDERS
+       IMPORTANT:
+       Do NOT use services(...) here.
+       That caused PGRST200 because there is no
+       foreign-key relationship between orders and services.
+    */
+    async function loadOrders() {
+
+      const { data, error } =
+        await supabase
+          .from("orders")
+          .select(`
+            id,
+            client_id,
+            worker_id,
+            service_id,
+            package_name,
+            quantity,
+            total_amount,
+            status,
+            created_at,
+            updated_at
+          `)
+          .eq("client_id", user.id)
+          .order("created_at", {
+            ascending: false
+          });
+
+      if (error) {
+        console.error("Dashboard orders error:", error);
+        showError(
+          "allOrders",
+          error.message || "Could not load orders."
+        );
+        showError(
+          "recentOrders",
+          error.message || "Could not load recent orders."
+        );
+        return;
+      }
+
+      const orders =
+        Array.isArray(data) ? data : [];
+
+      setText("totalOrders", orders.length);
+
+      const active =
+        orders.filter((order) =>
+          [
+            "pending",
+            "paid",
+            "in_progress",
+            "delivered"
+          ].includes(order.status)
+        ).length;
+
+      const completed =
+        orders.filter(
+          (order) =>
+            order.status === "completed"
+        ).length;
+
+      setText("activeOrders", active);
+      setText("completedOrders", completed);
+
+      await renderOrders(orders);
+    }
+
+    async function renderOrders(orders) {
+
+      let serviceMap = new Map();
+
+      const serviceIds = [
+        ...new Set(
+          orders
+            .map((order) => order.service_id)
+            .filter(
+              (id) =>
+                id !== null &&
+                id !== undefined &&
+                id !== ""
+            )
+        )
+      ];
+
+      /*
+        Service information is optional.
+        If services table/query fails, orders still work.
+      */
+      if (serviceIds.length) {
+        const { data: services, error } =
+          await supabase
+            .from("services")
+            .select("id,title,icon")
+            .in("id", serviceIds);
+
+        if (!error && Array.isArray(services)) {
+          serviceMap = new Map(
+            services.map((service) => [
+              String(service.id),
+              service
+            ])
+          );
+        } else if (error) {
+          console.warn(
+            "Service details unavailable:",
+            error.message
+          );
+        }
+      }
+
+      const enriched =
+        orders.map((order) => {
+          const service =
+            serviceMap.get(
+              String(order.service_id)
+            );
+
+          return {
+            ...order,
+            service_title:
+              service?.title || "NOVA Service",
+            service_icon:
+              service?.icon || "🛍️"
+          };
+        });
+
+      renderAllOrders(enriched);
+      renderRecentOrders(enriched.slice(0, 5));
+    }
+
+    function renderAllOrders(orders) {
+
+      const container = $("allOrders");
+      if (!container) return;
+
+      if (!orders.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <h3>No orders yet</h3>
+            <p>You haven't placed an order yet.</p>
             <a
               href="../services.html"
               class="dashboard-primary-button"
             >
               Browse Services
             </a>
-
           </div>
+        `;
+        return;
+      }
 
+      container.innerHTML = `
+        <div class="dashboard-orders-list">
+          ${orders.map(orderTemplate).join("")}
         </div>
+      `;
+    }
 
-      </section>
+    function renderRecentOrders(orders) {
 
+      const container = $("recentOrders");
+      if (!container) return;
 
-      <!-- MESSAGES -->
-      <section
-        class="dashboard-section"
-        id="section-messages"
-      >
-
-        <div class="section-page-header">
-
-          <div>
-
-            <span class="card-eyebrow">
-              COMMUNICATION
-            </span>
-
-            <h2>
-              Messages
-            </h2>
-
-            <p>
-              Your conversations with NOVA workers.
-            </p>
-
-          </div>
-
-        </div>
-
-        <div class="dashboard-card">
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              💬
-            </div>
-
-            <h3>
-              No conversations
-            </h3>
-
-            <p>
-              Your conversations will appear here when
-              you contact a worker or place an order.
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- FAVORITES -->
-      <section
-        class="dashboard-section"
-        id="section-favorites"
-      >
-
-        <div class="section-page-header">
-
-          <div>
-
-            <span class="card-eyebrow">
-              SAVED
-            </span>
-
-            <h2>
-              Favorites
-            </h2>
-
-            <p>
-              Services you've saved for later.
-            </p>
-
-          </div>
-
-          <a
-            href="../services.html"
-            class="dashboard-secondary-button"
-          >
-            Browse Services
-          </a>
-
-        </div>
-
-        <div class="dashboard-card">
-
-          <div
-            class="empty-state"
-            id="favoritesEmpty"
-          >
-
-            <div class="empty-icon">
-              ♡
-            </div>
-
-            <h3>
-              No favorites yet
-            </h3>
-
-            <p>
-              Save services you like and find them here later.
-            </p>
-
+      if (!orders.length) {
+        container.innerHTML = `
+          <div class="empty-state compact">
+            <div class="empty-icon">▣</div>
+            <h4>No orders yet</h4>
+            <p>Your recent orders will appear here.</p>
             <a
               href="../services.html"
-              class="dashboard-primary-button"
+              class="dashboard-secondary-button"
             >
-              Explore Services
+              Browse Services
             </a>
-
           </div>
+        `;
+        return;
+      }
 
+      container.innerHTML = `
+        <div class="dashboard-orders-list">
+          ${orders.map(orderTemplate).join("")}
         </div>
+      `;
+    }
 
-      </section>
+    function orderTemplate(order) {
 
+      const title =
+        order.service_title || "NOVA Service";
 
-      <!-- WALLET -->
-      <section
-        class="dashboard-section"
-        id="section-wallet"
-      >
+      const icon =
+        order.service_icon || "🛍️";
 
-        <div class="section-page-header">
+      const status =
+        order.status || "pending";
 
-          <div>
+      const serviceLink =
+        order.service_id
+          ? `../service.html?id=${encodeURIComponent(order.service_id)}`
+          : "../services.html";
 
-            <span class="card-eyebrow">
-              FINANCE
-            </span>
+      return `
+        <article class="dashboard-order">
 
-            <h2>
-              Wallet
-            </h2>
+          <div class="dashboard-order-main">
 
-            <p>
-              Manage your NOVA wallet and transactions.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="wallet-balance-card">
-
-          <div>
-
-            <span>
-              Available Balance
-            </span>
-
-            <strong id="walletMainBalance">
-              0 MAD
-            </strong>
-
-          </div>
-
-          <div class="wallet-icon">
-            ◈
-          </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-          <div class="card-header">
-
-            <div>
-
-              <span class="card-eyebrow">
-                TRANSACTIONS
-              </span>
-
-              <h3>
-                Transaction History
-              </h3>
-
+            <div class="dashboard-order-icon">
+              ${escapeHtml(icon)}
             </div>
 
-          </div>
-
-
-          <div class="empty-state compact">
-
-            <div class="empty-icon">
-              ◈
-            </div>
-
-            <h4>
-              No transactions
-            </h4>
-
-            <p>
-              Your wallet transactions will appear here.
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- PROFILE -->
-      <section
-        class="dashboard-section"
-        id="section-profile"
-      >
-
-        <div class="section-page-header">
-
-          <div>
-
-            <span class="card-eyebrow">
-              ACCOUNT
-            </span>
-
-            <h2>
-              My Profile
-            </h2>
-
-            <p>
-              View your account information.
-            </p>
-
-          </div>
-
-          <a
-            href="../profile.html"
-            class="dashboard-primary-button"
-          >
-            Edit Profile
-          </a>
-
-        </div>
-
-
-        <div class="dashboard-card profile-details-card">
-
-          <div class="profile-details-header">
-
-            <div
-              class="profile-big-avatar"
-              id="profileAvatar"
-            >
-              U
-            </div>
-
-            <div>
-
-              <h3 id="profileFullName">
-                Loading...
-              </h3>
-
-              <p id="profileEmail">
-                Loading...
-              </p>
-
-              <span
-                class="account-status"
-                id="profileAccountStatus"
-              >
-                Active Account
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="profile-info-grid">
-
-            <div class="profile-info-item">
-
-              <span>
-                First name
-              </span>
-
-              <strong id="profileFirstName">
-                —
-              </strong>
-
-            </div>
-
-
-            <div class="profile-info-item">
-
-              <span>
-                Last name
-              </span>
-
-              <strong id="profileLastName">
-                —
-              </strong>
-
-            </div>
-
-
-            <div class="profile-info-item">
-
-              <span>
-                Email
-              </span>
-
-              <strong id="profileEmailDetail">
-                —
-              </strong>
-
-            </div>
-
-
-            <div class="profile-info-item">
-
-              <span>
-                Country
-              </span>
-
-              <strong id="profileCountry">
-                —
-              </strong>
-
-            </div>
-
-
-            <div class="profile-info-item">
-
-              <span>
-                Account type
-              </span>
+            <div class="dashboard-order-info">
 
               <strong>
-                Client
+                ${escapeHtml(title)}
               </strong>
-
-            </div>
-
-
-            <div class="profile-info-item">
 
               <span>
-                Email verification
+                ${escapeHtml(order.package_name || "Standard")}
+                · Qty ${Number(order.quantity || 1)}
+                · ${escapeHtml(formatDate(order.created_at))}
               </span>
 
-              <strong id="profileVerification">
-                Checking...
-              </strong>
-
             </div>
 
           </div>
 
-        </div>
+          <div class="dashboard-order-right">
 
-      </section>
+            <strong>
+              ${escapeHtml(formatMoney(order.total_amount))}
+            </strong>
 
-
-      <!-- SUPPORT -->
-      <section
-        class="dashboard-section"
-        id="section-support"
-      >
-
-        <div class="section-page-header">
-
-          <div>
-
-            <span class="card-eyebrow">
-              HELP CENTER
+            <span class="status-${escapeHtml(status)}">
+              ${escapeHtml(statusLabel(status))}
             </span>
 
-            <h2>
-              Support
-            </h2>
-
-            <p>
-              Need help with your NOVA account or order?
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="support-grid">
-
-          <div class="dashboard-card support-card">
-
-            <div class="support-icon">
-              📦
+            <div style="margin-top:8px;">
+              <a
+                href="${serviceLink}"
+                class="card-link"
+              >
+                View
+              </a>
             </div>
 
-            <h3>
-              Order Support
-            </h3>
-
-            <p>
-              Get help with an order, delivery or revision.
-            </p>
-
-            <button
-              type="button"
-              class="dashboard-secondary-button"
-              id="orderSupportButton"
-            >
-              Contact Support
-            </button>
-
           </div>
 
-
-          <div class="dashboard-card support-card">
-
-            <div class="support-icon">
-              💳
-            </div>
-
-            <h3>
-              Payment Support
-            </h3>
-
-            <p>
-              Questions about payments, refunds or wallet.
-            </p>
-
-            <button
-              type="button"
-              class="dashboard-secondary-button"
-              id="paymentSupportButton"
-            >
-              Contact Support
-            </button>
-
-          </div>
-
-
-          <div class="dashboard-card support-card">
-
-            <div class="support-icon">
-              💬
-            </div>
-
-            <h3>
-              Contact Support
-            </h3>
-
-            <p>
-              Open a support ticket with the NOVA team.
-            </p>
-
-            <button
-              type="button"
-              class="dashboard-secondary-button"
-              id="contactSupportButton"
-            >
-              Contact Support
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </main>
-
-
-  <!-- SUPABASE -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
-
-  <script src="../js/supabase.js"></script>
-  <script src="../js/app.js"></script>
-
-
-  <script>
-    "use strict";
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      async () => {
-
-        const supabase =
-          window.NOVA_SUPABASE;
-
-        if (!supabase) {
-
-          console.error(
-            "NOVA Supabase is not initialized."
-          );
-
-          return;
-        }
-
-
-        /*
-        ==========================================================
-        ELEMENTS
-        ==========================================================
-        */
-
-        const sidebar =
-          document.getElementById(
-            "dashboardSidebar"
-          );
-
-        const overlay =
-          document.getElementById(
-            "dashboardOverlay"
-          );
-
-        const mobileMenuButton =
-          document.getElementById(
-            "mobileMenuButton"
-          );
-
-        const sidebarClose =
-          document.getElementById(
-            "sidebarClose"
-          );
-
-        const navLinks =
-          document.querySelectorAll(
-            ".dashboard-nav-link"
-          );
-
-        const sections =
-          document.querySelectorAll(
-            ".dashboard-section"
-          );
-
-        const pageTitle =
-          document.getElementById(
-            "pageTitle"
-          );
-
-
-        /*
-        ==========================================================
-        HELPERS
-        ==========================================================
-        */
-
-        function setText(
-          id,
-          value
-        ) {
-
-          const element =
-            document.getElementById(id);
-
-          if (element) {
-            element.textContent =
-              value ?? "";
-          }
-
-        }
-
-
-        function showError(
-          message
-        ) {
-
-          const box =
-            document.getElementById(
-              "novaError"
-            );
-
-          const success =
-            document.getElementById(
-              "novaSuccess"
-            );
-
-          if (success) {
-            success.style.display =
-              "none";
-          }
-
-          if (box) {
-
-            box.textContent =
-              message;
-
-            box.style.display =
-              "block";
-
-          }
-
-        }
-
-
-        function showSuccess(
-          message
-        ) {
-
-          const box =
-            document.getElementById(
-              "novaSuccess"
-            );
-
-          const error =
-            document.getElementById(
-              "novaError"
-            );
-
-          if (error) {
-            error.style.display =
-              "none";
-          }
-
-          if (box) {
-
-            box.textContent =
-              message;
-
-            box.style.display =
-              "block";
-
-          }
-
-        }
-
-
-        function escapeHtml(
-          value
-        ) {
-
-          const div =
-            document.createElement(
-              "div"
-            );
-
-          div.textContent =
-            value ?? "";
-
-          return div.innerHTML;
-
-        }
-
-
-        function getInitials(
-          first,
-          last,
-          email
-        ) {
-
-          const firstLetter =
-            first?.trim()?.charAt(0) ||
-            "";
-
-          const lastLetter =
-            last?.trim()?.charAt(0) ||
-            "";
-
-          if (
-            firstLetter ||
-            lastLetter
-          ) {
-
-            return (
-              firstLetter +
-              lastLetter
-            ).toUpperCase();
-
-          }
-
-          return (
-            email?.charAt(0) ||
-            "U"
-          ).toUpperCase();
-
-        }
-
-
-        function setAvatar(
-          id,
-          initials,
-          avatarUrl
-        ) {
-
-          const element =
-            document.getElementById(id);
-
-          if (!element) {
-            return;
-          }
-
-          if (avatarUrl) {
-
-            element.style.backgroundImage =
-              `url("${avatarUrl}")`;
-
-            element.style.backgroundSize =
-              "cover";
-
-            element.style.backgroundPosition =
-              "center";
-
-            element.textContent =
-              "";
-
-          } else {
-
-            element.style.backgroundImage =
-              "none";
-
-            element.textContent =
-              initials;
-
-          }
-
-        }
-
-
-        function formatPrice(
-          value
-        ) {
-
-          return new Intl.NumberFormat(
-            "en-US",
-            {
-              style: "currency",
-              currency: "USD"
-            }
-          ).format(
-            Number(value || 0)
-          );
-
-        }
-
-
-        function formatDate(
-          value
-        ) {
-
-          if (!value) {
-            return "—";
-          }
-
-          return new Date(
-            value
-          ).toLocaleDateString(
-            undefined,
-            {
-              year: "numeric",
-              month: "short",
-              day: "numeric"
-            }
-          );
-
-        }
-
-
-        function statusClass(
-          status
-        ) {
-
-          return String(
-            status || "pending"
-          )
-          .toLowerCase()
-          .replace(
-            /\s+/g,
-            "_"
-          );
-
-        }
-
-
-        /*
-        ==========================================================
-        AUTH
-        ==========================================================
-        */
-
-        const {
-          data: sessionData,
-          error: sessionError
-        } =
-          await supabase.auth.getSession();
-
-
-        if (
-          sessionError
-        ) {
-
-          console.error(
-            "Session error:",
-            sessionError
-          );
-
-          window.location.href =
-            "../login.html?redirect=client/dashboard.html";
-
-          return;
-
-        }
-
-
-        /*
-         * IMPORTANT:
-         * Do NOT sign out here.
-         *
-         * If a valid Supabase session exists,
-         * keep the user inside the dashboard.
-         */
-
-        if (
-          !sessionData ||
-          !sessionData.session
-        ) {
-
-          window.location.href =
-            "../login.html?redirect=client/dashboard.html";
-
-          return;
-
-        }
-
-
-        const user =
-          sessionData.session.user;
-
-
-        /*
-        ==========================================================
-        PROFILE
-        ==========================================================
-        */
-
-        const {
-          data: profile,
-          error: profileError
-        } =
-          await supabase
-            .from("profiles")
-            .select(`
-              id,
-              first_name,
-              last_name,
-              email,
-              avatar_url,
-              phone,
-              country,
-              is_email_verified,
-              is_active,
-              role_id,
-              roles (
-                name
-              )
-            `)
-            .eq(
-              "id",
-              user.id
-            )
-            .single();
-
-
-        if (
-          profileError ||
-          !profile
-        ) {
-
-          console.error(
-            "Profile error:",
-            profileError
-          );
-
-          /*
-           * Do not immediately sign out.
-           *
-           * This prevents the dashboard from
-           * throwing the user back to login
-           * because of a temporary profile/RLS
-           * problem.
-           */
-
-          showError(
-            "Your session is active, but your NOVA profile could not be loaded."
-          );
-
-          return;
-
-        }
-
-
-        /*
-        ==========================================================
-        ACCOUNT STATUS
-        ==========================================================
-        */
-
-        if (
-          profile.is_active === false
-        ) {
-
-          await supabase.auth.signOut();
-
-          window.location.href =
-            "../login.html?disabled=1";
-
-          return;
-
-        }
-
-
-        /*
-        ==========================================================
-        ROLE
-        ==========================================================
-        */
-
-        const role =
-          profile.roles?.name ||
-          "client";
-
-
-        if (
-          role !== "client"
-        ) {
-
-          if (
-            role === "worker"
-          ) {
-
-            window.location.href =
-              "../worker/dashboard.html";
-
-          } else if (
-            role === "admin"
-          ) {
-
-            window.location.href =
-              "../admin/dashboard.html";
-
-          } else {
-
-            showError(
-              "Your account role is not configured correctly."
-            );
-
-          }
-
-          return;
-
-        }
-
-
-        /*
-        ==========================================================
-        USER DATA
-        ==========================================================
-        */
-
-        const firstName =
-          profile.first_name ||
-          user.user_metadata?.first_name ||
-          "User";
-
-        const lastName =
-          profile.last_name ||
-          user.user_metadata?.last_name ||
-          "";
-
-        const fullName =
-          `${firstName} ${lastName}`
-            .trim();
-
-        const email =
-          profile.email ||
-          user.email ||
-          "";
-
-        const initials =
-          getInitials(
-            firstName,
-            lastName,
-            email
-          );
-
-
-        /*
-        ==========================================================
-        UPDATE UI
-        ==========================================================
-        */
-
-        setText(
-          "sidebarUserName",
-          fullName
+        </article>
+      `;
+    }
+
+    /* WALLET
+       The dashboard must NOT fail if wallets table
+       does not exist yet. We simply keep 0 MAD.
+    */
+    async function loadWallet() {
+
+      setText("walletBalance", "0 MAD");
+      setText("walletMainBalance", "0 MAD");
+
+      const { data, error } =
+        await supabase
+          .from("wallets")
+          .select("balance")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+      if (error) {
+        console.warn(
+          "Wallet unavailable:",
+          error.message
         );
-
-        setText(
-          "sidebarUserEmail",
-          email
-        );
-
-        setText(
-          "topbarUserName",
-          fullName
-        );
-
-        setText(
-          "welcomeName",
-          firstName
-        );
-
-        setText(
-          "profileSummaryName",
-          fullName
-        );
-
-        setText(
-          "profileSummaryEmail",
-          email
-        );
-
-        setText(
-          "profileFullName",
-          fullName
-        );
-
-        setText(
-          "profileEmail",
-          email
-        );
-
-        setText(
-          "profileFirstName",
-          firstName
-        );
-
-        setText(
-          "profileLastName",
-          lastName
-        );
-
-        setText(
-          "profileEmailDetail",
-          email
-        );
-
-        setText(
-          "profileCountry",
-          profile.country ||
-          "Not set"
-        );
-
-
-        /*
-        ==========================================================
-        EMAIL VERIFICATION
-        ==========================================================
-        */
-
-        const emailVerified =
-          profile.is_email_verified ||
-          !!user.email_confirmed_at;
-
-        setText(
-          "profileVerification",
-          emailVerified
-            ? "Verified ✓"
-            : "Not verified"
-        );
-
-
-        /*
-        ==========================================================
-        AVATARS
-        ==========================================================
-        */
-
-        setAvatar(
-          "sidebarAvatar",
-          initials,
-          profile.avatar_url
-        );
-
-        setAvatar(
-          "topbarAvatar",
-          initials,
-          profile.avatar_url
-        );
-
-        setAvatar(
-          "profileSummaryAvatar",
-          initials,
-          profile.avatar_url
-        );
-
-        setAvatar(
-          "profileAvatar",
-          initials,
-          profile.avatar_url
-        );
-
-
-        setText(
-          "accountStatus",
-          profile.is_active
-            ? "Active"
-            : "Inactive"
-        );
-
-        setText(
-          "profileAccountStatus",
-          profile.is_active
-            ? "Active Account"
-            : "Inactive Account"
-        );
-
-
-        /*
-        ==========================================================
-        THEME
-        ==========================================================
-        */
-
-        const savedTheme =
-          localStorage.getItem(
-            "nova-theme"
-          );
-
-        if (
-          savedTheme === "light"
-        ) {
-
-          document.body.classList.add(
-            "light-theme"
-          );
-
-        }
-
-
-        const themeToggle =
-          document.getElementById(
-            "themeToggle"
-          );
-
-
-        if (themeToggle) {
-
-          themeToggle.addEventListener(
-            "click",
-            () => {
-
-              document.body.classList.toggle(
-                "light-theme"
-              );
-
-              const theme =
-                document.body.classList.contains(
-                  "light-theme"
-                )
-                  ? "light"
-                  : "dark";
-
-              localStorage.setItem(
-                "nova-theme",
-                theme
-              );
-
-            }
-          );
-
-        }
-
-
-        /*
-        ==========================================================
-        MOBILE SIDEBAR
-        ==========================================================
-        */
-
-        function openSidebar() {
-
-          sidebar?.classList.add(
-            "open"
-          );
-
-          overlay?.classList.add(
-            "open"
-          );
-
-        }
-
-
-        function closeSidebar() {
-
-          sidebar?.classList.remove(
-            "open"
-          );
-
-          overlay?.classList.remove(
-            "open"
-          );
-
-        }
-
-
-        mobileMenuButton?.addEventListener(
-          "click",
-          openSidebar
-        );
-
-        sidebarClose?.addEventListener(
-          "click",
-          closeSidebar
-        );
-
-        overlay?.addEventListener(
-          "click",
-          closeSidebar
-        );
-
-
-        /*
-        ==========================================================
-        SECTION SYSTEM
-        ==========================================================
-        */
-
-        function showSection(
-          sectionName
-        ) {
-
-          const validSections = [
-            "overview",
-            "orders",
-            "messages",
-            "favorites",
-            "wallet",
-            "profile",
-            "support"
-          ];
-
-
-          if (
-            !validSections.includes(
-              sectionName
-            )
-          ) {
-
-            sectionName =
-              "overview";
-
-          }
-
-
-          sections.forEach(
-            section => {
-
-              section.classList.remove(
-                "active"
-              );
-
-            }
-          );
-
-
-          const target =
-            document.getElementById(
-              `section-${sectionName}`
-            );
-
-
-          if (target) {
-
-            target.classList.add(
-              "active"
-            );
-
-          }
-
-
-          navLinks.forEach(
-            link => {
-
-              link.classList.toggle(
-                "active",
-                link.dataset.section ===
-                sectionName
-              );
-
-            }
-          );
-
-
-          const titles = {
-
-            overview:
-              "Overview",
-
-            orders:
-              "My Orders",
-
-            messages:
-              "Messages",
-
-            favorites:
-              "Favorites",
-
-            wallet:
-              "Wallet",
-
-            profile:
-              "My Profile",
-
-            support:
-              "Support"
-
-          };
-
-
-          if (pageTitle) {
-
-            pageTitle.textContent =
-              titles[sectionName] ||
-              "Dashboard";
-
-          }
-
-
-          window.history.replaceState(
-            null,
-            "",
-            `#${sectionName}`
-          );
-
-
-          closeSidebar();
-
-
-          if (
-            sectionName ===
-            "orders"
-          ) {
-
-            loadAllOrders();
-
-          }
-
-        }
-
-
-        navLinks.forEach(
-          link => {
-
-            link.addEventListener(
-              "click",
-              event => {
-
-                event.preventDefault();
-
-                showSection(
-                  link.dataset.section
-                );
-
-              }
-            );
-
-          }
-        );
-
-
-        document
-          .querySelectorAll(
-            "[data-section-target]"
-          )
-          .forEach(
-            button => {
-
-              button.addEventListener(
-                "click",
-                () => {
-
-                  showSection(
-                    button.dataset.sectionTarget
-                  );
-
-                }
-              );
-
-            }
-          );
-
-
-        /*
-        ==========================================================
-        LOAD ORDERS
-        ==========================================================
-        */
-
-        async function getMyOrders() {
-
-          const {
-            data,
-            error
-          } =
-            await supabase
-              .from("orders")
-              .select(`
-                id,
-                client_id,
-                worker_id,
-                service_id,
-                quantity,
-                total_amount,
-                status,
-                created_at,
-                services (
-                  title
-                )
-              `)
-              .eq(
-                "client_id",
-                user.id
-              )
-              .order(
-                "created_at",
-                {
-                  ascending: false
-                }
-              );
-
-          if (error) {
-            throw error;
-          }
-
-          return data || [];
-
-        }
-
-
-        function renderOrders(
-          orders,
-          containerId,
-          emptyId
-        ) {
-
-          const container =
-            document.getElementById(
-              containerId
-            );
-
-          const empty =
-            document.getElementById(
-              emptyId
-            );
-
-          if (!container) {
-            return;
-          }
-
-
-          container.innerHTML =
-            "";
-
-
-          if (
-            !orders.length
-          ) {
-
-            if (empty) {
-              empty.style.display =
-                "block";
-            }
-
-            return;
-
-          }
-
-
-          if (empty) {
-            empty.style.display =
-              "none";
-          }
-
-
-          orders.forEach(
-            order => {
-
-              const title =
-                order.services?.title ||
-                "NOVA Service";
-
-              const card =
-                document.createElement(
-                  "div"
-                );
-
-              card.className =
-                "nova-order-card";
-
-
-              card.innerHTML = `
-
-                <div class="nova-order-left">
-
-                  <div class="nova-order-title">
-                    ${escapeHtml(title)}
-                  </div>
-
-                  <div class="nova-order-id">
-                    Order #${escapeHtml(
-                      String(order.id)
-                        .slice(0, 8)
-                    )}
-                  </div>
-
-                  <div class="nova-order-meta">
-
-                    <span class="nova-order-tag">
-                      📅 ${formatDate(
-                        order.created_at
-                      )}
-                    </span>
-
-                    <span class="nova-order-tag">
-                      📦 Qty:
-                      ${Number(
-                        order.quantity || 1
-                      )}
-                    </span>
-
-                  </div>
-
-                </div>
-
-
-                <div class="nova-order-right">
-
-                  <div class="nova-order-price">
-                    ${formatPrice(
-                      order.total_amount
-                    )}
-                  </div>
-
-                  <span
-                    class="nova-status ${statusClass(
-                      order.status
-                    )}"
-                  >
-                    ${escapeHtml(
-                      String(
-                        order.status ||
-                        "pending"
-                      ).replaceAll(
-                        "_",
-                        " "
-                      )
-                    )}
-                  </span>
-
-                </div>
-
-              `;
-
-
-              container.appendChild(
-                card
-              );
-
-            }
-          );
-
-        }
-
-
-        async function loadDashboardOrders() {
-
-          try {
-
-            const loading =
-              document.getElementById(
-                "recentOrdersLoading"
-              );
-
-            if (loading) {
-              loading.style.display =
-                "block";
-            }
-
-
-            const orders =
-              await getMyOrders();
-
-
-            setText(
-              "totalOrders",
-              orders.length
-            );
-
-
-            const activeStatuses = [
-              "pending",
-              "paid",
-              "in_progress",
-              "delivered"
-            ];
-
-
-            const active =
-              orders.filter(
-                order =>
-                  activeStatuses.includes(
-                    order.status
-                  )
-              );
-
-
-            const completed =
-              orders.filter(
-                order =>
-                  order.status ===
-                  "completed"
-              );
-
-
-            setText(
-              "activeOrders",
-              active.length
-            );
-
-
-            setText(
-              "completedOrders",
-              completed.length
-            );
-
-
-            renderOrders(
-              orders.slice(0, 5),
-              "recentOrdersList",
-              "recentOrdersEmpty"
-            );
-
-
-          } catch (error) {
-
-            console.error(
-              "Dashboard orders error:",
-              error
-            );
-
-            showError(
-              "Could not load your orders."
-            );
-
-          } finally {
-
-            const loading =
-              document.getElementById(
-                "recentOrdersLoading"
-              );
-
-            if (loading) {
-              loading.style.display =
-                "none";
-            }
-
-          }
-
-        }
-
-
-        async function loadAllOrders() {
-
-          try {
-
-            const loading =
-              document.getElementById(
-                "allOrdersLoading"
-              );
-
-            if (loading) {
-              loading.style.display =
-                "block";
-            }
-
-
-            const orders =
-              await getMyOrders();
-
-
-            renderOrders(
-              orders,
-              "allOrdersList",
-              "allOrdersEmpty"
-            );
-
-
-          } catch (error) {
-
-            console.error(
-              "All orders error:",
-              error
-            );
-
-            showError(
-              "Could not load your orders."
-            );
-
-          } finally {
-
-            const loading =
-              document.getElementById(
-                "allOrdersLoading"
-              );
-
-            if (loading) {
-              loading.style.display =
-                "none";
-            }
-
-          }
-
-        }
-
-
-        /*
-        ==========================================================
-        WALLET
-        ==========================================================
-        */
-
-        async function loadWallet() {
-
-          /*
-           * If points/wallet tables do not exist yet,
-           * keep the UI at 0 instead of logging the
-           * user out.
-           */
-
-          try {
-
-            const {
-              data,
-              error
-            } =
-              await supabase
-                .from("wallets")
-                .select(
-                  "balance"
-                )
-                .eq(
-                  "user_id",
-                  user.id
-                )
-                .maybeSingle();
-
-
-            if (
-              !error &&
-              data
-            ) {
-
-              const balance =
-                Number(
-                  data.balance || 0
-                );
-
-              setText(
-                "walletBalance",
-                `${balance.toFixed(2)} MAD`
-              );
-
-              setText(
-                "walletMainBalance",
-                `${balance.toFixed(2)} MAD`
-              );
-
-            }
-
-          } catch (error) {
-
-            console.warn(
-              "Wallet table not ready:",
-              error
-            );
-
-          }
-
-        }
-
-
-        /*
-        ==========================================================
-        REALTIME AUTH
-        ==========================================================
-        */
-
-        supabase.auth.onAuthStateChange(
-          (
-            event,
-            currentSession
-          ) => {
-
-            /*
-             * Only redirect when the session
-             * is genuinely gone.
-             *
-             * TOKEN_REFRESHED is NOT a logout.
-             */
-
-            if (
-              event === "SIGNED_OUT" ||
-              (
-                !currentSession &&
-                event !== "INITIAL_SESSION"
-              )
-            ) {
-
-              window.location.href =
-                "../login.html?redirect=client/dashboard.html";
-
-            }
-
-          }
-        );
-
-
-        /*
-        ==========================================================
-        LOGOUT
-        ==========================================================
-        */
-
-        document
-          .querySelectorAll(
-            "[data-logout]"
-          )
-          .forEach(
-            button => {
-
-              button.addEventListener(
-                "click",
-                async () => {
-
-                  button.disabled =
-                    true;
-
-                  button.textContent =
-                    "Logging out...";
-
-
-                  const {
-                    error
-                  } =
-                    await supabase.auth.signOut();
-
-
-                  if (error) {
-
-                    console.error(
-                      "Logout error:",
-                      error
-                    );
-
-                    button.disabled =
-                      false;
-
-                    button.textContent =
-                      "Logout";
-
-                    showError(
-                      "Could not log out. Please try again."
-                    );
-
-                    return;
-
-                  }
-
-
-                  window.location.href =
-                    "../login.html";
-
-                }
-              );
-
-            }
-          );
-
-
-        /*
-        ==========================================================
-        SUPPORT BUTTONS
-        ==========================================================
-        */
-
-        [
-          "orderSupportButton",
-          "paymentSupportButton",
-          "contactSupportButton"
-        ]
-        .forEach(
-          id => {
-
-            document
-              .getElementById(id)
-              ?.addEventListener(
-                "click",
-                () => {
-
-                  showSuccess(
-                    "Support center will be connected to the NOVA ticket system next."
-                  );
-
-                }
-              );
-
-          }
-        );
-
-
-        /*
-        ==========================================================
-        INITIAL LOAD
-        ==========================================================
-        */
-
-        await loadDashboardOrders();
-
-        await loadWallet();
-
-
-        /*
-        ==========================================================
-        INITIAL SECTION
-        ==========================================================
-        */
-
-        const initialSection =
-          window.location.hash
-            .replace(
-              "#",
-              ""
-            )
-            .trim();
-
-
-        showSection(
-          initialSection ||
-          "overview"
-        );
-
-
-        console.log(
-          "NOVA Client Dashboard loaded:",
-          email
-        );
-
+        return;
       }
+
+      const balance =
+        Number(data?.balance || 0);
+
+      setText(
+        "walletBalance",
+        formatMoney(balance)
+      );
+
+      setText(
+        "walletMainBalance",
+        formatMoney(balance)
+      );
+    }
+
+    /* LOGOUT */
+    document
+      .querySelectorAll("[data-logout]")
+      .forEach((button) => {
+
+        button.addEventListener("click", async () => {
+
+          button.disabled = true;
+
+          const original =
+            button.innerHTML;
+
+          button.textContent =
+            "Logging out...";
+
+          const { error } =
+            await supabase.auth.signOut();
+
+          if (error) {
+            console.error(
+              "Logout error:",
+              error
+            );
+
+            button.disabled = false;
+            button.innerHTML = original;
+
+            alert(
+              "Could not log out. Please try again."
+            );
+
+            return;
+          }
+
+          window.location.href =
+            "../login.html";
+        });
+
+      });
+
+    /* AUTH STATE */
+    supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") {
+        window.location.href =
+          "../login.html?redirect=client/dashboard.html";
+      }
+    });
+
+    /* LOAD REAL DATA */
+    await Promise.allSettled([
+      loadOrders(),
+      loadWallet()
+    ]);
+
+    console.log(
+      "NOVA Client Dashboard loaded:",
+      email
     );
+
+  });
   </script>
 
 </body>
