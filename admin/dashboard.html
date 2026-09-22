@@ -1,1015 +1,1389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Admin Dashboard - NOVA</title>
+  <title>NOVA Admin</title>
 
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
-
-  <style>
-
-    .admin-page {
-      min-height: 100vh;
-      padding: 110px 24px 50px;
-    }
-
-    .admin-container {
-      max-width: 1300px;
-      margin: auto;
-    }
-
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .admin-header h1 {
-      margin: 0 0 8px;
-      font-size: 36px;
-    }
-
-    .admin-header p {
-      margin: 0;
-      opacity: .65;
-    }
-
-    .admin-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .nova-btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 18px;
-      cursor: pointer;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nova-primary {
-      background: #111827;
-      color: white;
-    }
-
-    .nova-secondary {
-      background: rgba(127,127,127,.12);
-      color: inherit;
-    }
-
-    .admin-profile {
-      padding: 20px;
-      border: 1px solid rgba(127,127,127,.15);
-      border-radius: 18px;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: rgba(255,255,255,.7);
-    }
-
-    body.dark .admin-profile {
-      background: rgba(20,20,20,.7);
-    }
-
-    .admin-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: rgba(127,127,127,.15);
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(4, minmax(0,1fr));
-      gap: 16px;
-      margin-bottom: 25px;
-    }
-
-    .stat-card {
-      padding: 22px;
-      border-radius: 18px;
-      border: 1px solid rgba(127,127,127,.15);
-      background: rgba(255,255,255,.7);
-    }
-
-    body.dark .stat-card {
-      background: rgba(20,20,20,.7);
-    }
-
-    .stat-icon {
-      font-size: 25px;
-      margin-bottom: 12px;
-    }
-
-    .stat-number {
-      font-size: 30px;
-      font-weight: 800;
-    }
-
-    .stat-label {
-      opacity: .6;
-      margin-top: 4px;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns:
-        1.5fr 1fr;
-      gap: 20px;
-    }
-
-    .panel {
-      border: 1px solid rgba(127,127,127,.15);
-      border-radius: 18px;
-      padding: 22px;
-      background: rgba(255,255,255,.7);
-    }
-
-    body.dark .panel {
-      background: rgba(20,20,20,.7);
-    }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .panel-header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .user-row,
-    .order-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(127,127,127,.12);
-    }
-
-    .user-row:last-child,
-    .order-row:last-child {
-      border-bottom: 0;
-    }
-
-    .user-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .mini-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: rgba(127,127,127,.12);
-      flex-shrink: 0;
-    }
-
-    .user-name {
-      font-weight: 700;
-    }
-
-    .user-email {
-      font-size: 12px;
-      opacity: .55;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .role-badge {
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: rgba(127,127,127,.1);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: capitalize;
-    }
-
-    .quick-actions {
-      display: grid;
-      gap: 10px;
-    }
-
-    .quick-action {
-      padding: 15px;
-      border-radius: 13px;
-      background: rgba(127,127,127,.08);
-      color: inherit;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-    }
-
-    .system-box {
-      padding: 15px;
-      border-radius: 13px;
-      background: rgba(34,197,94,.1);
-      color: #16a34a;
-      margin-bottom: 15px;
-    }
-
-    .error {
-      display: none;
-      padding: 15px;
-      border-radius: 12px;
-      background: rgba(239,68,68,.1);
-      color: #dc2626;
-      margin-bottom: 20px;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 35px;
-      opacity: .6;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 30px;
-      opacity: .6;
-    }
-
-    @media(max-width: 1000px) {
-
-      .stats-grid {
-        grid-template-columns:
-          repeat(2,1fr);
-      }
-
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-    @media(max-width: 600px) {
-
-      .admin-page {
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .admin-header h1 {
-        font-size: 28px;
-      }
-
-      .user-row,
-      .order-row {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-    }
-
-  </style>
-
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 
 <body>
 
-  <header class="site-header">
+  <div class="admin-layout">
 
-    <div class="container nav-container">
+    <!-- ================= SIDEBAR ================= -->
 
-      <a
-        href="../index.html"
-        class="logo"
-      >
-        NOVA
-      </a>
+    <aside class="admin-sidebar" id="adminSidebar">
 
-      <nav class="main-nav">
-
+      <div class="admin-logo">
         <a href="../index.html">
-          Home
-        </a>
+          <div class="admin-logo-mark">N</div>
 
-        <a href="../services.html">
-          Marketplace
+          <div class="admin-logo-text">
+            NOVA<span>.</span>
+          </div>
         </a>
+      </div>
 
-        <a
-          href="dashboard.html"
-          class="active"
-        >
-          Admin
-        </a>
+      <nav class="admin-nav">
+
+        <div class="admin-nav-title">
+          MAIN
+        </div>
+
+        <ul class="admin-nav-list">
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link active"
+              data-section="overview"
+            >
+              <span class="admin-nav-icon">⌂</span>
+              <span class="admin-nav-label">Overview</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="users"
+            >
+              <span class="admin-nav-icon">👥</span>
+              <span class="admin-nav-label">Users</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="workers"
+            >
+              <span class="admin-nav-icon">🧑‍💻</span>
+              <span class="admin-nav-label">Workers</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="services"
+            >
+              <span class="admin-nav-icon">🛍️</span>
+              <span class="admin-nav-label">Services</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="orders"
+            >
+              <span class="admin-nav-icon">📦</span>
+              <span class="admin-nav-label">Orders</span>
+            </button>
+          </li>
+
+        </ul>
+
+        <div class="admin-nav-title">
+          MANAGEMENT
+        </div>
+
+        <ul class="admin-nav-list">
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="wallets"
+            >
+              <span class="admin-nav-icon">💰</span>
+              <span class="admin-nav-label">Wallets</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="support"
+            >
+              <span class="admin-nav-icon">🎫</span>
+              <span class="admin-nav-label">Support</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="reviews"
+            >
+              <span class="admin-nav-icon">⭐</span>
+              <span class="admin-nav-label">Reviews</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="coupons"
+            >
+              <span class="admin-nav-icon">🎟️</span>
+              <span class="admin-nav-label">Coupons</span>
+            </button>
+          </li>
+
+        </ul>
+
+        <div class="admin-nav-title">
+          PLATFORM
+        </div>
+
+        <ul class="admin-nav-list">
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="nova-guard"
+            >
+              <span class="admin-nav-icon">🛡️</span>
+              <span class="admin-nav-label">NOVA Guard</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="settings"
+            >
+              <span class="admin-nav-icon">⚙️</span>
+              <span class="admin-nav-label">Settings</span>
+            </button>
+          </li>
+
+          <li class="admin-nav-item">
+            <button
+              class="admin-nav-link"
+              data-section="logs"
+            >
+              <span class="admin-nav-icon">📜</span>
+              <span class="admin-nav-label">Admin Logs</span>
+            </button>
+          </li>
+
+        </ul>
 
       </nav>
 
-      <div class="nav-actions">
+      <!-- SIDEBAR FOOTER -->
+
+      <div class="admin-sidebar-footer">
+
+        <div class="admin-user-mini">
+
+          <div
+            class="admin-user-avatar"
+            id="adminAvatar"
+          >
+            A
+          </div>
+
+          <div class="admin-user-info">
+
+            <div
+              class="admin-user-name"
+              id="adminName"
+            >
+              Admin
+            </div>
+
+            <div class="admin-user-role">
+              Administrator
+            </div>
+
+          </div>
+
+        </div>
 
         <button
-          id="themeToggle"
-          class="icon-btn"
-          type="button"
-        >
-          🌙
-        </button>
-
-        <button
+          class="admin-btn admin-btn-danger"
           id="logoutBtn"
-          class="nova-btn nova-secondary"
-          type="button"
+          style="width:100%;margin-top:10px;"
         >
           Logout
         </button>
 
       </div>
 
-    </div>
+    </aside>
 
-  </header>
 
-  <main class="admin-page">
+    <!-- ================= MAIN ================= -->
 
-    <div class="admin-container">
+    <main class="admin-main">
 
-      <div
-        id="errorBox"
-        class="error"
-      ></div>
+      <!-- HEADER -->
 
-      <div class="admin-header">
+      <header class="admin-header">
 
-        <div>
+        <div class="admin-header-left">
 
-          <h1>
-            Admin Dashboard
-          </h1>
+          <button
+            class="admin-icon-btn admin-menu-btn"
+            id="menuBtn"
+          >
+            ☰
+          </button>
 
-          <p>
-            Manage NOVA platform data and activity.
-          </p>
+          <div>
+
+            <div
+              class="admin-page-title"
+              id="pageTitle"
+            >
+              Overview
+            </div>
+
+            <div class="admin-page-subtitle">
+              NOVA Administration Panel
+            </div>
+
+          </div>
 
         </div>
 
-        <div class="admin-actions">
+        <div class="admin-header-actions">
+
+          <button
+            class="admin-icon-btn"
+            id="themeBtn"
+            title="Theme"
+          >
+            ◐
+          </button>
 
           <a
-            href="../services.html"
-            class="nova-btn nova-secondary"
+            href="../index.html"
+            class="admin-icon-btn"
+            title="Open website"
           >
-            Marketplace
-          </a>
-
-          <a
-            href="../profile.html"
-            class="nova-btn nova-primary"
-          >
-            My Profile
+            ↗
           </a>
 
         </div>
 
-      </div>
+      </header>
 
-      <div class="admin-profile">
 
-        <img
-          id="adminAvatar"
-          class="admin-avatar"
-          src="https://placehold.co/100x100"
-          alt="Admin"
+      <!-- CONTENT -->
+
+      <div class="admin-content">
+
+        <div id="globalAlert"></div>
+
+
+        <!-- ================= OVERVIEW ================= -->
+
+        <section
+          class="admin-section"
+          id="section-overview"
         >
 
-        <div>
+          <div class="admin-welcome">
 
-          <h2
-            id="adminName"
-            style="margin:0 0 5px;"
-          >
-            Loading...
-          </h2>
+            <h1>
+              Welcome to NOVA Admin 👋
+            </h1>
 
-          <p
-            id="adminEmail"
-            style="margin:0;opacity:.6;"
-          >
-            Loading...
-          </p>
-
-        </div>
-
-      </div>
-
-      <section class="stats-grid">
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            👥
-          </div>
-
-          <div
-            id="usersCount"
-            class="stat-number"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Users
-          </div>
-
-        </div>
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            🛍️
-          </div>
-
-          <div
-            id="servicesCount"
-            class="stat-number"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Services
-          </div>
-
-        </div>
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            📦
-          </div>
-
-          <div
-            id="ordersCount"
-            class="stat-number"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Orders
-          </div>
-
-        </div>
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            💰
-          </div>
-
-          <div
-            id="revenueCount"
-            class="stat-number"
-          >
-            $0
-          </div>
-
-          <div class="stat-label">
-            Revenue
-          </div>
-
-        </div>
-
-      </section>
-
-      <div class="dashboard-grid">
-
-        <section class="panel">
-
-          <div class="panel-header">
-
-            <h2>
-              Recent Users
-            </h2>
+            <p>
+              Control users, workers, services, orders,
+              wallets and platform settings from one place.
+            </p>
 
           </div>
 
-          <div
-            id="usersLoading"
-            class="loading"
-          >
-            Loading users...
+
+          <!-- STATS -->
+
+          <div class="admin-stats">
+
+            <div class="admin-stat-card">
+
+              <div class="admin-stat-top">
+
+                <div>
+                  <div class="admin-stat-label">
+                    Total Users
+                  </div>
+
+                  <div
+                    class="admin-stat-value"
+                    id="statUsers"
+                  >
+                    0
+                  </div>
+                </div>
+
+                <div class="admin-stat-icon">
+                  👥
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+              <div class="admin-stat-top">
+
+                <div>
+                  <div class="admin-stat-label">
+                    Workers
+                  </div>
+
+                  <div
+                    class="admin-stat-value"
+                    id="statWorkers"
+                  >
+                    0
+                  </div>
+                </div>
+
+                <div class="admin-stat-icon">
+                  🧑‍💻
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+              <div class="admin-stat-top">
+
+                <div>
+                  <div class="admin-stat-label">
+                    Orders
+                  </div>
+
+                  <div
+                    class="admin-stat-value"
+                    id="statOrders"
+                  >
+                    0
+                  </div>
+                </div>
+
+                <div class="admin-stat-icon">
+                  📦
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+              <div class="admin-stat-top">
+
+                <div>
+                  <div class="admin-stat-label">
+                    Wallet Balance
+                  </div>
+
+                  <div
+                    class="admin-stat-value"
+                    id="statWallet"
+                  >
+                    0 MAD
+                  </div>
+                </div>
+
+                <div class="admin-stat-icon">
+                  💰
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
-          <div id="usersList"></div>
+
+          <!-- QUICK ACTIONS -->
+
+          <div class="admin-grid">
+
+            <div class="admin-card">
+
+              <div class="admin-card-header">
+
+                <div>
+                  <div class="admin-card-title">
+                    Quick Actions
+                  </div>
+
+                  <div class="admin-card-subtitle">
+                    Frequently used administration tools
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="admin-card-body">
+
+                <div class="admin-quick-actions">
+
+                  <button
+                    class="admin-quick-action"
+                    data-open-section="users"
+                  >
+                    <span class="admin-quick-icon">
+                      👥
+                    </span>
+
+                    <span class="admin-quick-title">
+                      Manage Users
+                    </span>
+
+                    <span class="admin-quick-description">
+                      View platform accounts
+                    </span>
+                  </button>
+
+
+                  <button
+                    class="admin-quick-action"
+                    data-open-section="services"
+                  >
+                    <span class="admin-quick-icon">
+                      🛍️
+                    </span>
+
+                    <span class="admin-quick-title">
+                      Manage Services
+                    </span>
+
+                    <span class="admin-quick-description">
+                      Control marketplace services
+                    </span>
+                  </button>
+
+
+                  <button
+                    class="admin-quick-action"
+                    data-open-section="orders"
+                  >
+                    <span class="admin-quick-icon">
+                      📦
+                    </span>
+
+                    <span class="admin-quick-title">
+                      Manage Orders
+                    </span>
+
+                    <span class="admin-quick-description">
+                      Monitor all orders
+                    </span>
+                  </button>
+
+
+                  <button
+                    class="admin-quick-action"
+                    data-open-section="settings"
+                  >
+                    <span class="admin-quick-icon">
+                      ⚙️
+                    </span>
+
+                    <span class="admin-quick-title">
+                      Platform Settings
+                    </span>
+
+                    <span class="admin-quick-description">
+                      Configure NOVA
+                    </span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="admin-card">
+
+              <div class="admin-card-header">
+
+                <div>
+                  <div class="admin-card-title">
+                    System Status
+                  </div>
+
+                  <div class="admin-card-subtitle">
+                    Current platform state
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="admin-card-body">
+
+                <div class="admin-activity-list">
+
+                  <div class="admin-activity">
+
+                    <div class="admin-activity-icon">
+                      ●
+                    </div>
+
+                    <div>
+                      <div class="admin-activity-title">
+                        Authentication
+                      </div>
+
+                      <div class="admin-activity-time">
+                        Supabase Auth
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <div class="admin-activity">
+
+                    <div class="admin-activity-icon">
+                      ●
+                    </div>
+
+                    <div>
+                      <div class="admin-activity-title">
+                        Database
+                      </div>
+
+                      <div class="admin-activity-time">
+                        Supabase PostgreSQL
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <div class="admin-activity">
+
+                    <div class="admin-activity-icon">
+                      ●
+                    </div>
+
+                    <div>
+                      <div class="admin-activity-title">
+                        Admin Security
+                      </div>
+
+                      <div class="admin-activity-time">
+                        Role protected
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </section>
 
-        <aside>
 
-          <section class="panel">
+        <!-- ================= USERS ================= -->
 
-            <div class="panel-header">
+        <section
+          class="admin-section"
+          id="section-users"
+          hidden
+        >
 
-              <h2>
-                Quick Actions
-              </h2>
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Users
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Manage NOVA accounts
+                </div>
+              </div>
+
+              <div class="admin-search">
+
+                <span class="admin-search-icon">
+                  🔎
+                </span>
+
+                <input
+                  id="usersSearch"
+                  type="search"
+                  placeholder="Search users..."
+                >
+
+              </div>
 
             </div>
 
-            <div class="quick-actions">
+            <div class="admin-table-wrap">
 
-              <a
-                href="../services.html"
-                class="quick-action"
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                  </tr>
+
+                </thead>
+
+                <tbody id="usersTable">
+
+                  <tr>
+                    <td colspan="5">
+                      <div class="admin-loading">
+                        Loading users...
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= WORKERS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-workers"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Workers
+                </div>
+
+                <div class="admin-card-subtitle">
+                  NOVA service providers
+                </div>
+              </div>
+
+            </div>
+
+            <div class="admin-table-wrap">
+
+              <table class="admin-table">
+
+                <thead>
+                  <tr>
+                    <th>Worker</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+
+                <tbody id="workersTable">
+
+                  <tr>
+                    <td colspan="4">
+                      <div class="admin-loading">
+                        Loading workers...
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= SERVICES ================= -->
+
+        <section
+          class="admin-section"
+          id="section-services"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Services
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Marketplace services
+                </div>
+              </div>
+
+              <button
+                class="admin-btn admin-btn-primary"
+                id="addServiceBtn"
               >
-                🛍️ Manage Marketplace
-              </a>
+                + Add Service
+              </button>
 
-              <a
-                href="../orders.html"
-                class="quick-action"
+            </div>
+
+            <div class="admin-table-wrap">
+
+              <table class="admin-table">
+
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Worker</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody id="servicesTable">
+
+                  <tr>
+                    <td colspan="4">
+                      <div class="admin-empty">
+                        <div class="admin-empty-icon">
+                          🛍️
+                        </div>
+
+                        <div class="admin-empty-title">
+                          Services table not connected yet
+                        </div>
+
+                        <div class="admin-empty-text">
+                          Create the services database structure
+                          to activate this section.
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= ORDERS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-orders"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Orders
+                </div>
+
+                <div class="admin-card-subtitle">
+                  All NOVA orders
+                </div>
+              </div>
+
+              <select
+                id="orderStatusFilter"
+                class="admin-filter-select"
               >
-                📦 View Orders
-              </a>
 
-              <a
-                href="../profile.html"
-                class="quick-action"
+                <option value="">
+                  All statuses
+                </option>
+
+                <option value="pending">
+                  Pending
+                </option>
+
+                <option value="paid">
+                  Paid
+                </option>
+
+                <option value="in_progress">
+                  In progress
+                </option>
+
+                <option value="delivered">
+                  Delivered
+                </option>
+
+                <option value="completed">
+                  Completed
+                </option>
+
+                <option value="cancelled">
+                  Cancelled
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="admin-table-wrap">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+                    <th>Order</th>
+                    <th>Client</th>
+                    <th>Worker</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+
+                </thead>
+
+                <tbody id="ordersTable">
+
+                  <tr>
+                    <td colspan="6">
+                      <div class="admin-loading">
+                        Loading orders...
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= WALLETS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-wallets"
+          hidden
+        >
+
+          <div class="admin-grid">
+
+            <div class="admin-card">
+
+              <div class="admin-card-header">
+
+                <div>
+                  <div class="admin-card-title">
+                    Wallets
+                  </div>
+
+                  <div class="admin-card-subtitle">
+                    Platform wallet overview
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="admin-card-body">
+
+                <div class="admin-stat-label">
+                  Total wallet balance
+                </div>
+
+                <div
+                  class="admin-stat-value"
+                  id="walletTotal"
+                >
+                  0 MAD
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= SUPPORT ================= -->
+
+        <section
+          class="admin-section"
+          id="section-support"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Support Tickets
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Customer support center
+                </div>
+              </div>
+
+            </div>
+
+            <div class="admin-empty">
+
+              <div class="admin-empty-icon">
+                🎫
+              </div>
+
+              <div class="admin-empty-title">
+                Support system ready
+              </div>
+
+              <div class="admin-empty-text">
+                Connect the support_tickets table to activate
+                ticket management.
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= REVIEWS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-reviews"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Reviews
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Manage marketplace reviews
+                </div>
+              </div>
+
+            </div>
+
+            <div class="admin-empty">
+
+              <div class="admin-empty-icon">
+                ⭐
+              </div>
+
+              <div class="admin-empty-title">
+                Reviews module
+              </div>
+
+              <div class="admin-empty-text">
+                Connect the reviews table to activate moderation.
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= COUPONS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-coupons"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Coupons
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Discounts and promotional codes
+                </div>
+              </div>
+
+              <button
+                class="admin-btn admin-btn-primary"
               >
-                👤 Admin Profile
-              </a>
-
-              <a
-                href="../index.html"
-                class="quick-action"
-              >
-                🏠 Open NOVA
-              </a>
+                + Create Coupon
+              </button>
 
             </div>
 
-          </section>
+            <div class="admin-empty">
 
-          <br>
+              <div class="admin-empty-icon">
+                🎟️
+              </div>
 
-          <section class="panel">
+              <div class="admin-empty-title">
+                Coupon system
+              </div>
 
-            <div class="panel-header">
-
-              <h2>
-                System
-              </h2>
+              <div class="admin-empty-text">
+                Coupon database will be connected here.
+              </div>
 
             </div>
 
-            <div class="system-box">
-              ● Supabase connection active
+          </div>
+
+        </section>
+
+
+        <!-- ================= NOVA GUARD ================= -->
+
+        <section
+          class="admin-section"
+          id="section-nova-guard"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  NOVA Guard
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Platform safety and behavior controls
+                </div>
+              </div>
+
             </div>
 
-            <div style="font-size:13px;opacity:.65;">
-              NOVA Admin Panel
+            <div class="admin-card-body">
+
+              <div class="admin-form">
+
+                <div class="admin-alert admin-alert-info">
+                  🛡️
+                  <span>
+                    NOVA Guard settings control platform behavior.
+                    Keep security-sensitive rules enforced on the
+                    server side.
+                  </span>
+                </div>
+
+
+                <div
+                  style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:20px;
+                  "
+                >
+
+                  <div>
+
+                    <strong>
+                      Platform protection
+                    </strong>
+
+                    <div class="admin-form-help">
+                      Keep platform protection enabled.
+                    </div>
+
+                  </div>
+
+                  <label class="admin-switch">
+
+                    <input
+                      type="checkbox"
+                      id="guardEnabled"
+                      checked
+                    >
+
+                    <span class="admin-switch-slider"></span>
+
+                  </label>
+
+                </div>
+
+
+                <div
+                  style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:20px;
+                  "
+                >
+
+                  <div>
+
+                    <strong>
+                      User reporting
+                    </strong>
+
+                    <div class="admin-form-help">
+                      Allow users to report problematic content.
+                    </div>
+
+                  </div>
+
+                  <label class="admin-switch">
+
+                    <input
+                      type="checkbox"
+                      id="reportsEnabled"
+                      checked
+                    >
+
+                    <span class="admin-switch-slider"></span>
+
+                  </label>
+
+                </div>
+
+              </div>
+
             </div>
 
-          </section>
+          </div>
 
-        </aside>
+        </section>
+
+
+        <!-- ================= SETTINGS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-settings"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Platform Settings
+                </div>
+
+                <div class="admin-card-subtitle">
+                  General NOVA configuration
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="admin-card-body">
+
+              <div class="admin-form">
+
+                <div class="admin-form-row">
+
+                  <div class="admin-form-group">
+
+                    <label class="admin-form-label">
+                      Platform name
+                    </label>
+
+                    <input
+                      class="admin-input"
+                      value="NOVA"
+                      id="platformName"
+                    >
+
+                  </div>
+
+
+                  <div class="admin-form-group">
+
+                    <label class="admin-form-label">
+                      Currency
+                    </label>
+
+                    <select
+                      class="admin-select"
+                      id="platformCurrency"
+                    >
+
+                      <option value="MAD">
+                        MAD
+                      </option>
+
+                    </select>
+
+                  </div>
+
+                </div>
+
+
+                <div class="admin-form-group">
+
+                  <label class="admin-form-label">
+                    Platform description
+                  </label>
+
+                  <textarea
+                    class="admin-textarea"
+                    id="platformDescription"
+                  >Digital services marketplace powered by NOVA.</textarea>
+
+                </div>
+
+
+                <button
+                  class="admin-btn admin-btn-primary"
+                  id="saveSettingsBtn"
+                >
+                  Save Settings
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= LOGS ================= -->
+
+        <section
+          class="admin-section"
+          id="section-logs"
+          hidden
+        >
+
+          <div class="admin-card">
+
+            <div class="admin-card-header">
+
+              <div>
+                <div class="admin-card-title">
+                  Admin Logs
+                </div>
+
+                <div class="admin-card-subtitle">
+                  Administrative activity
+                </div>
+              </div>
+
+            </div>
+
+            <div class="admin-empty">
+
+              <div class="admin-empty-icon">
+                📜
+              </div>
+
+              <div class="admin-empty-title">
+                Admin activity logs
+              </div>
+
+              <div class="admin-empty-text">
+                Logs will appear here when the admin_logs
+                database table is connected.
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
 
       </div>
 
-    </div>
+    </main>
 
-  </main>
+  </div>
+
+
+  <div
+    class="admin-overlay"
+    id="adminOverlay"
+  ></div>
+
+
+  <!-- ================= SCRIPTS ================= -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="../js/supabase.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/auth.js"></script>
 
-  <script>
-
-    "use strict";
-
-    const supabaseClient =
-      window.NOVA_SUPABASE;
-
-    function showError(message) {
-
-      const box =
-        document.getElementById(
-          "errorBox"
-        );
-
-      box.textContent =
-        message;
-
-      box.style.display =
-        "block";
-
-    }
-
-    function escapeHtml(value) {
-
-      const div =
-        document.createElement("div");
-
-      div.textContent =
-        value ?? "";
-
-      return div.innerHTML;
-
-    }
-
-    function formatPrice(value) {
-
-      return new Intl.NumberFormat(
-        "en-US",
-        {
-          style: "currency",
-          currency: "USD"
-        }
-      ).format(
-        Number(value || 0)
-      );
-
-    }
-
-    async function checkAdmin() {
-
-      const {
-        data: {
-          user
-        },
-        error
-      } =
-        await supabaseClient.auth.getUser();
-
-      if (error) {
-        throw error;
-      }
-
-      if (!user) {
-
-        window.location.href =
-          "../login.html";
-
-        return null;
-
-      }
-
-      const {
-        data: profile,
-        error: profileError
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            id,
-            first_name,
-            last_name,
-            email,
-            avatar_url,
-            roles (
-              name
-            )
-          `)
-          .eq(
-            "id",
-            user.id
-          )
-          .single();
-
-      if (profileError) {
-        throw profileError;
-      }
-
-      const role =
-        profile?.roles?.name;
-
-      if (role !== "admin") {
-
-        /*
-         * Worker/client cannot enter
-         * the admin dashboard.
-         */
-
-        window.location.href =
-          "../index.html";
-
-        return null;
-
-      }
-
-      return {
-        user,
-        profile
-      };
-
-    }
-
-    async function loadAdminDashboard() {
-
-      try {
-
-        const result =
-          await checkAdmin();
-
-        if (!result) return;
-
-        const {
-          user,
-          profile
-        } = result;
-
-        const fullName =
-          `${profile.first_name || ""} ${profile.last_name || ""}`
-            .trim() ||
-          "NOVA Admin";
-
-        document
-          .getElementById("adminName")
-          .textContent =
-          fullName;
-
-        document
-          .getElementById("adminEmail")
-          .textContent =
-          profile.email ||
-          user.email ||
-          "";
-
-        if (profile.avatar_url) {
-
-          document
-            .getElementById("adminAvatar")
-            .src =
-            profile.avatar_url;
-
-        }
-
-        /*
-         * USERS
-         */
-
-        const {
-          data: users,
-          error: usersError
-        } =
-          await supabaseClient
-            .from("profiles")
-            .select(
-              `
-                id,
-                first_name,
-                last_name,
-                email,
-                avatar_url,
-                created_at,
-                roles (
-                  name
-                )
-              `
-            )
-            .order(
-              "created_at",
-              {
-                ascending: false
-              }
-            );
-
-        if (usersError) {
-          throw usersError;
-        }
-
-        document
-          .getElementById("usersCount")
-          .textContent =
-          users?.length || 0;
-
-        renderUsers(
-          users?.slice(0, 8) || []
-        );
-
-        /*
-         * SERVICES
-         */
-
-        const {
-          data: services,
-          error: servicesError
-        } =
-          await supabaseClient
-            .from("services")
-            .select(
-              "id"
-            );
-
-        if (!servicesError) {
-
-          document
-            .getElementById("servicesCount")
-            .textContent =
-            services?.length || 0;
-
-        }
-
-        /*
-         * ORDERS
-         */
-
-        const {
-          data: orders,
-          error: ordersError
-        } =
-          await supabaseClient
-            .from("orders")
-            .select(
-              "id,total_amount,status"
-            );
-
-        if (!ordersError) {
-
-          document
-            .getElementById("ordersCount")
-            .textContent =
-            orders?.length || 0;
-
-          const revenue =
-            (orders || [])
-              .filter(
-                order =>
-                  order.status !==
-                  "cancelled"
-              )
-              .reduce(
-                (
-                  total,
-                  order
-                ) =>
-                  total +
-                  Number(
-                    order.total_amount || 0
-                  ),
-                0
-              );
-
-          document
-            .getElementById("revenueCount")
-            .textContent =
-            formatPrice(
-              revenue
-            );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "NOVA Admin Error:",
-          error
-        );
-
-        showError(
-          error.message ||
-          "Could not load admin dashboard."
-        );
-
-      }
-
-    }
-
-    function renderUsers(users) {
-
-      const loading =
-        document.getElementById(
-          "usersLoading"
-        );
-
-      const list =
-        document.getElementById(
-          "usersList"
-        );
-
-      loading.style.display =
-        "none";
-
-      list.innerHTML = "";
-
-      if (!users.length) {
-
-        list.innerHTML = `
-          <div class="empty">
-            No users found.
-          </div>
-        `;
-
-        return;
-      }
-
-      users.forEach(user => {
-
-        const fullName =
-          `${user.first_name || ""} ${user.last_name || ""}`
-            .trim() ||
-          "Unnamed User";
-
-        const role =
-          user.roles?.name ||
-          "client";
-
-        const row =
-          document.createElement(
-            "div"
-          );
-
-        row.className =
-          "user-row";
-
-        row.innerHTML = `
-
-          <div class="user-main">
-
-            <img
-              class="mini-avatar"
-              src="${
-                escapeHtml(
-                  user.avatar_url ||
-                  "https://placehold.co/100x100"
-                )
-              }"
-              alt=""
-            >
-
-            <div>
-
-              <div class="user-name">
-                ${escapeHtml(fullName)}
-              </div>
-
-              <div class="user-email">
-                ${escapeHtml(
-                  user.email || ""
-                )}
-              </div>
-
-            </div>
-
-          </div>
-
-          <span class="role-badge">
-            ${escapeHtml(role)}
-          </span>
-
-        `;
-
-        list.appendChild(row);
-
-      });
-
-    }
-
-    document
-      .getElementById("logoutBtn")
-      ?.addEventListener(
-        "click",
-        async () => {
-
-          await supabaseClient
-            .auth
-            .signOut();
-
-          window.location.href =
-            "../login.html";
-
-        }
-      );
-
-    loadAdminDashboard();
-
-  </script>
+  <script src="dashboard.js"></script>
 
 </body>
 </html>
