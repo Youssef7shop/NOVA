@@ -25,24 +25,209 @@
 
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
+
+  <style>
+    .nova-order-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .nova-order-card {
+      border: 1px solid rgba(127,127,127,.15);
+      border-radius: 15px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      background: rgba(127,127,127,.04);
+    }
+
+    .nova-order-left {
+      min-width: 0;
+    }
+
+    .nova-order-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .nova-order-id {
+      font-size: 12px;
+      opacity: .55;
+    }
+
+    .nova-order-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .nova-order-tag {
+      font-size: 11px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(127,127,127,.1);
+    }
+
+    .nova-order-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .nova-order-price {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .nova-status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: capitalize;
+      background: rgba(127,127,127,.12);
+    }
+
+    .nova-status.pending {
+      background: rgba(234,179,8,.15);
+      color: #a16207;
+    }
+
+    .nova-status.paid {
+      background: rgba(59,130,246,.15);
+      color: #2563eb;
+    }
+
+    .nova-status.in_progress {
+      background: rgba(139,92,246,.15);
+      color: #7c3aed;
+    }
+
+    .nova-status.delivered {
+      background: rgba(14,165,233,.15);
+      color: #0284c7;
+    }
+
+    .nova-status.completed {
+      background: rgba(34,197,94,.15);
+      color: #16a34a;
+    }
+
+    .nova-status.cancelled {
+      background: rgba(239,68,68,.15);
+      color: #dc2626;
+    }
+
+    .nova-loading {
+      padding: 25px;
+      text-align: center;
+      opacity: .6;
+    }
+
+    .nova-error {
+      display: none;
+      padding: 13px 15px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      background: rgba(239,68,68,.1);
+      color: #dc2626;
+    }
+
+    .nova-success {
+      display: none;
+      padding: 13px 15px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      background: rgba(34,197,94,.1);
+      color: #16a34a;
+    }
+
+    .nova-buy-box {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 15px;
+      background: rgba(127,127,127,.05);
+      border: 1px solid rgba(127,127,127,.12);
+    }
+
+    .nova-buy-box h4 {
+      margin: 0 0 12px;
+    }
+
+    .nova-buy-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .nova-buy-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(127,127,127,.2);
+      background: transparent;
+      color: inherit;
+      outline: none;
+    }
+
+    .nova-buy-input:focus {
+      border-color: rgba(99,102,241,.7);
+    }
+
+    .nova-small-note {
+      font-size: 12px;
+      opacity: .55;
+      margin-top: 8px;
+    }
+
+    .nova-order-button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-weight: 700;
+      background: #111827;
+      color: white;
+    }
+
+    .nova-order-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 700px) {
+      .nova-order-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nova-order-right {
+        text-align: left;
+      }
+
+      .nova-buy-form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body class="dashboard-page">
 
-  <!-- =========================================
-       MOBILE OVERLAY
-  ========================================== -->
-
+  <!-- MOBILE OVERLAY -->
   <div
     class="dashboard-overlay"
     id="dashboardOverlay"
   ></div>
 
 
-  <!-- =========================================
-       SIDEBAR
-  ========================================== -->
-
+  <!-- SIDEBAR -->
   <aside
     class="dashboard-sidebar"
     id="dashboardSidebar"
@@ -70,8 +255,7 @@
     </div>
 
 
-    <!-- USER MINI PROFILE -->
-
+    <!-- USER -->
     <div class="sidebar-user">
 
       <div
@@ -97,7 +281,6 @@
 
 
     <!-- NAVIGATION -->
-
     <nav class="dashboard-nav">
 
       <p class="nav-title">
@@ -105,7 +288,7 @@
       </p>
 
       <a
-        href="../overview.html"
+        href="#overview"
         class="dashboard-nav-link active"
         data-section="overview"
       >
@@ -114,7 +297,7 @@
       </a>
 
       <a
-        href="../orders.html"
+        href="#orders"
         class="dashboard-nav-link"
         data-section="orders"
       >
@@ -123,7 +306,7 @@
       </a>
 
       <a
-        href="../messages.html"
+        href="#messages"
         class="dashboard-nav-link"
         data-section="messages"
       >
@@ -132,7 +315,7 @@
       </a>
 
       <a
-        href="../favorites.html"
+        href="#favorites"
         class="dashboard-nav-link"
         data-section="favorites"
       >
@@ -146,7 +329,7 @@
       </p>
 
       <a
-        href="../wallet.html"
+        href="#wallet"
         class="dashboard-nav-link"
         data-section="wallet"
       >
@@ -155,7 +338,7 @@
       </a>
 
       <a
-        href="../profile.html"
+        href="#profile"
         class="dashboard-nav-link"
         data-section="profile"
       >
@@ -164,7 +347,7 @@
       </a>
 
       <a
-        href="../support.html"
+        href="#support"
         class="dashboard-nav-link"
         data-section="support"
       >
@@ -176,7 +359,6 @@
 
 
     <!-- SIDEBAR BOTTOM -->
-
     <div class="sidebar-bottom">
 
       <a
@@ -201,17 +383,10 @@
   </aside>
 
 
-  <!-- =========================================
-       MAIN
-  ========================================== -->
-
+  <!-- MAIN -->
   <main class="dashboard-main">
 
-
-    <!-- =======================================
-         TOPBAR
-    ======================================== -->
-
+    <!-- TOPBAR -->
     <header class="dashboard-topbar">
 
       <div class="topbar-left">
@@ -242,8 +417,6 @@
 
       <div class="topbar-right">
 
-        <!-- THEME -->
-
         <button
           type="button"
           class="dashboard-icon-button"
@@ -252,9 +425,6 @@
         >
           ◐
         </button>
-
-
-        <!-- NOTIFICATIONS -->
 
         <button
           type="button"
@@ -265,9 +435,6 @@
           ♢
           <span class="notification-dot"></span>
         </button>
-
-
-        <!-- USER -->
 
         <div class="topbar-user">
 
@@ -297,23 +464,26 @@
     </header>
 
 
-    <!-- =======================================
-         CONTENT
-    ======================================== -->
-
+    <!-- CONTENT -->
     <div class="dashboard-content">
 
+      <!-- ERROR / SUCCESS -->
+      <div
+        class="nova-error"
+        id="novaError"
+      ></div>
 
-      <!-- =====================================
-           OVERVIEW
-      ====================================== -->
+      <div
+        class="nova-success"
+        id="novaSuccess"
+      ></div>
 
+
+      <!-- OVERVIEW -->
       <section
         class="dashboard-section active"
         id="section-overview"
       >
-
-        <!-- WELCOME -->
 
         <div class="welcome-card">
 
@@ -325,9 +495,7 @@
 
             <h2>
               Welcome back,
-              <span id="welcomeName">
-                ...
-              </span>
+              <span id="welcomeName">...</span>
               👋
             </h2>
 
@@ -355,7 +523,6 @@
 
 
         <!-- STATS -->
-
         <div class="dashboard-stats">
 
           <div class="stat-card">
@@ -436,13 +603,10 @@
         </div>
 
 
-        <!-- TWO COLUMNS -->
-
+        <!-- GRID -->
         <div class="dashboard-grid">
 
-
           <!-- RECENT ORDERS -->
-
           <div class="dashboard-card large-card">
 
             <div class="card-header">
@@ -469,10 +633,22 @@
 
             </div>
 
+            <div
+              id="recentOrdersLoading"
+              class="nova-loading"
+            >
+              Loading orders...
+            </div>
+
+            <div
+              id="recentOrdersList"
+              class="nova-order-list"
+            ></div>
 
             <div
               class="empty-state compact"
               id="recentOrdersEmpty"
+              style="display:none;"
             >
 
               <div class="empty-icon">
@@ -499,8 +675,7 @@
           </div>
 
 
-          <!-- PROFILE CARD -->
-
+          <!-- PROFILE -->
           <div class="dashboard-card profile-summary-card">
 
             <div class="card-header">
@@ -560,7 +735,6 @@
 
 
         <!-- QUICK ACTIONS -->
-
         <div class="dashboard-card">
 
           <div class="card-header">
@@ -586,11 +760,13 @@
               href="../services.html"
               class="quick-action"
             >
+
               <span class="quick-action-icon">
                 🔎
               </span>
 
               <div>
+
                 <strong>
                   Find a Service
                 </strong>
@@ -598,7 +774,9 @@
                 <span>
                   Browse available services
                 </span>
+
               </div>
+
             </a>
 
 
@@ -607,11 +785,13 @@
               class="quick-action"
               data-section-target="orders"
             >
+
               <span class="quick-action-icon">
                 📦
               </span>
 
               <div>
+
                 <strong>
                   My Orders
                 </strong>
@@ -619,7 +799,9 @@
                 <span>
                   Track your orders
                 </span>
+
               </div>
+
             </button>
 
 
@@ -628,11 +810,13 @@
               class="quick-action"
               data-section-target="messages"
             >
+
               <span class="quick-action-icon">
                 💬
               </span>
 
               <div>
+
                 <strong>
                   Messages
                 </strong>
@@ -640,7 +824,9 @@
                 <span>
                   Chat with workers
                 </span>
+
               </div>
+
             </button>
 
 
@@ -649,11 +835,13 @@
               class="quick-action"
               data-section-target="support"
             >
+
               <span class="quick-action-icon">
                 🛟
               </span>
 
               <div>
+
                 <strong>
                   Get Support
                 </strong>
@@ -661,7 +849,9 @@
                 <span>
                   Contact NOVA support
                 </span>
+
               </div>
+
             </button>
 
           </div>
@@ -671,10 +861,7 @@
       </section>
 
 
-      <!-- =====================================
-           ORDERS
-      ====================================== -->
-
+      <!-- ORDERS -->
       <section
         class="dashboard-section"
         id="section-orders"
@@ -710,7 +897,23 @@
 
         <div class="dashboard-card">
 
-          <div class="empty-state">
+          <div
+            id="allOrdersLoading"
+            class="nova-loading"
+          >
+            Loading your orders...
+          </div>
+
+          <div
+            id="allOrdersList"
+            class="nova-order-list"
+          ></div>
+
+          <div
+            class="empty-state"
+            id="allOrdersEmpty"
+            style="display:none;"
+          >
 
             <div class="empty-icon">
               📦
@@ -739,10 +942,7 @@
       </section>
 
 
-      <!-- =====================================
-           MESSAGES
-      ====================================== -->
-
+      <!-- MESSAGES -->
       <section
         class="dashboard-section"
         id="section-messages"
@@ -768,7 +968,6 @@
 
         </div>
 
-
         <div class="dashboard-card">
 
           <div class="empty-state">
@@ -793,10 +992,7 @@
       </section>
 
 
-      <!-- =====================================
-           FAVORITES
-      ====================================== -->
-
+      <!-- FAVORITES -->
       <section
         class="dashboard-section"
         id="section-favorites"
@@ -828,7 +1024,6 @@
           </a>
 
         </div>
-
 
         <div class="dashboard-card">
 
@@ -863,10 +1058,7 @@
       </section>
 
 
-      <!-- =====================================
-           WALLET
-      ====================================== -->
-
+      <!-- WALLET -->
       <section
         class="dashboard-section"
         id="section-wallet"
@@ -954,10 +1146,7 @@
       </section>
 
 
-      <!-- =====================================
-           PROFILE
-      ====================================== -->
-
+      <!-- PROFILE -->
       <section
         class="dashboard-section"
         id="section-profile"
@@ -980,6 +1169,13 @@
             </p>
 
           </div>
+
+          <a
+            href="../profile.html"
+            class="dashboard-primary-button"
+          >
+            Edit Profile
+          </a>
 
         </div>
 
@@ -1005,7 +1201,10 @@
                 Loading...
               </p>
 
-              <span class="account-status">
+              <span
+                class="account-status"
+                id="profileAccountStatus"
+              >
                 Active Account
               </span>
 
@@ -1095,29 +1294,12 @@
 
           </div>
 
-
-          <div class="profile-note">
-
-            <strong>
-              Profile editing coming next
-            </strong>
-
-            <p>
-              Your profile information is currently loaded
-              directly from your secure NOVA account.
-            </p>
-
-          </div>
-
         </div>
 
       </section>
 
 
-      <!-- =====================================
-           SUPPORT
-      ====================================== -->
-
+      <!-- SUPPORT -->
       <section
         class="dashboard-section"
         id="section-support"
@@ -1163,8 +1345,9 @@
             <button
               type="button"
               class="dashboard-secondary-button"
+              id="orderSupportButton"
             >
-              Coming Soon
+              Contact Support
             </button>
 
           </div>
@@ -1187,8 +1370,9 @@
             <button
               type="button"
               class="dashboard-secondary-button"
+              id="paymentSupportButton"
             >
-              Coming Soon
+              Contact Support
             </button>
 
           </div>
@@ -1211,8 +1395,9 @@
             <button
               type="button"
               class="dashboard-secondary-button"
+              id="contactSupportButton"
             >
-              Coming Soon
+              Contact Support
             </button>
 
           </div>
@@ -1226,721 +1411,1495 @@
   </main>
 
 
-  <!-- =========================================
-       SUPABASE
-  ========================================== -->
-
+  <!-- SUPABASE -->
   <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
   ></script>
 
   <script src="../js/supabase.js"></script>
   <script src="../js/app.js"></script>
-  <script src="../js/auth.js"></script>
 
-
-  <!-- =========================================
-       CLIENT DASHBOARD LOGIC
-  ========================================== -->
 
   <script>
+    "use strict";
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener(
+      "DOMContentLoaded",
+      async () => {
 
-      const supabase = window.NOVA_SUPABASE;
+        const supabase =
+          window.NOVA_SUPABASE;
 
-      if (!supabase) {
-        console.error("NOVA Supabase is not initialized.");
-        return;
-      }
+        if (!supabase) {
 
+          console.error(
+            "NOVA Supabase is not initialized."
+          );
 
-      /* =======================================
-         ELEMENTS
-      ======================================== */
-
-      const sidebar =
-        document.getElementById("dashboardSidebar");
-
-      const overlay =
-        document.getElementById("dashboardOverlay");
-
-      const mobileMenuButton =
-        document.getElementById("mobileMenuButton");
-
-      const sidebarClose =
-        document.getElementById("sidebarClose");
-
-      const navLinks =
-        document.querySelectorAll(".dashboard-nav-link");
-
-      const sections =
-        document.querySelectorAll(".dashboard-section");
-
-      const pageTitle =
-        document.getElementById("pageTitle");
-
-
-      /* =======================================
-         AUTH CHECK
-      ======================================== */
-
-      const {
-        data: sessionData,
-        error: sessionError
-      } = await supabase.auth.getSession();
-
-
-      if (
-        sessionError ||
-        !sessionData ||
-        !sessionData.session
-      ) {
-
-        window.location.href =
-          "../login.html?redirect=client/dashboard.html";
-
-        return;
-      }
-
-
-      const user =
-        sessionData.session.user;
-
-
-      /* =======================================
-         GET REAL USER PROFILE
-      ======================================== */
-
-      const {
-        data: profile,
-        error: profileError
-      } = await supabase
-        .from("profiles")
-        .select(`
-          id,
-          first_name,
-          last_name,
-          email,
-          avatar_url,
-          phone,
-          country,
-          is_email_verified,
-          is_active,
-          role_id,
-          roles (
-            name
-          )
-        `)
-        .eq("id", user.id)
-        .single();
-
-
-      if (profileError || !profile) {
-
-        console.error(
-          "Could not load profile:",
-          profileError
-        );
-
-        alert(
-          "We couldn't load your NOVA profile. Please try logging in again."
-        );
-
-        await supabase.auth.signOut();
-
-        window.location.href =
-          "../login.html";
-
-        return;
-      }
-
-
-      /* =======================================
-         ACCOUNT STATUS
-      ======================================== */
-
-      if (!profile.is_active) {
-
-        await supabase.auth.signOut();
-
-        alert(
-          "Your NOVA account has been disabled."
-        );
-
-        window.location.href =
-          "../login.html";
-
-        return;
-      }
-
-
-      /* =======================================
-         ROLE CHECK
-      ======================================== */
-
-      const role =
-        profile.roles?.name || "client";
-
-
-      if (role !== "client") {
-
-        if (role === "worker") {
-
-          window.location.href =
-            "../worker/dashboard.html";
-
-        } else if (role === "admin") {
-
-          window.location.href =
-            "../admin/dashboard.html";
-
-        } else {
-
-          await supabase.auth.signOut();
-
-          window.location.href =
-            "../login.html";
+          return;
         }
 
-        return;
-      }
 
-
-      /* =======================================
-         REAL USER DATA
-      ======================================== */
-
-      const firstName =
-        profile.first_name ||
-        user.user_metadata?.first_name ||
-        "User";
-
-      const lastName =
-        profile.last_name ||
-        user.user_metadata?.last_name ||
-        "";
-
-      const fullName =
-        `${firstName} ${lastName}`.trim();
-
-      const email =
-        profile.email ||
-        user.email ||
-        "";
-
-      const initials =
-        getInitials(
-          firstName,
-          lastName,
-          email
-        );
-
-
-      /* =======================================
-         UPDATE UI
-      ======================================== */
-
-      setText(
-        "sidebarUserName",
-        fullName
-      );
-
-      setText(
-        "sidebarUserEmail",
-        email
-      );
-
-      setText(
-        "topbarUserName",
-        fullName
-      );
-
-      setText(
-        "welcomeName",
-        firstName
-      );
-
-      setText(
-        "profileSummaryName",
-        fullName
-      );
-
-      setText(
-        "profileSummaryEmail",
-        email
-      );
-
-      setText(
-        "profileFullName",
-        fullName
-      );
-
-      setText(
-        "profileEmail",
-        email
-      );
-
-      setText(
-        "profileFirstName",
-        firstName
-      );
-
-      setText(
-        "profileLastName",
-        lastName
-      );
-
-      setText(
-        "profileEmailDetail",
-        email
-      );
-
-      setText(
-        "profileCountry",
-        profile.country || "Not set"
-      );
-
-
-      /* =======================================
-         EMAIL VERIFICATION
-      ======================================== */
-
-      const emailVerified =
-        profile.is_email_verified ||
-        !!user.email_confirmed_at;
-
-
-      setText(
-        "profileVerification",
-        emailVerified
-          ? "Verified ✓"
-          : "Not verified"
-      );
-
-
-      /* =======================================
-         AVATARS
-      ======================================== */
-
-      setAvatar(
-        "sidebarAvatar",
-        initials,
-        profile.avatar_url
-      );
-
-      setAvatar(
-        "topbarAvatar",
-        initials,
-        profile.avatar_url
-      );
-
-      setAvatar(
-        "profileSummaryAvatar",
-        initials,
-        profile.avatar_url
-      );
-
-      setAvatar(
-        "profileAvatar",
-        initials,
-        profile.avatar_url
-      );
-
-
-      /* =======================================
-         ACCOUNT STATUS
-      ======================================== */
-
-      setText(
-        "accountStatus",
-        profile.is_active
-          ? "Active"
-          : "Inactive"
-      );
-
-
-      /* =======================================
-         THEME
-      ======================================== */
-
-      const savedTheme =
-        localStorage.getItem("nova-theme");
-
-      if (savedTheme === "light") {
-        document.body.classList.add(
-          "light-theme"
-        );
-      }
-
-
-      const themeToggle =
-        document.getElementById("themeToggle");
-
-
-      if (themeToggle) {
-
-        themeToggle.addEventListener(
-          "click",
-          () => {
-
-            document.body.classList.toggle(
-              "light-theme"
-            );
-
-            const theme =
-              document.body.classList.contains(
-                "light-theme"
-              )
-                ? "light"
-                : "dark";
-
-            localStorage.setItem(
-              "nova-theme",
-              theme
-            );
-
-          }
-        );
-
-      }
-
-
-      /* =======================================
-         MOBILE SIDEBAR
-      ======================================== */
-
-      function openSidebar() {
-
-        sidebar?.classList.add("open");
-        overlay?.classList.add("open");
-
-      }
-
-
-      function closeSidebar() {
-
-        sidebar?.classList.remove("open");
-        overlay?.classList.remove("open");
-
-      }
-
-
-      mobileMenuButton?.addEventListener(
-        "click",
-        openSidebar
-      );
-
-      sidebarClose?.addEventListener(
-        "click",
-        closeSidebar
-      );
-
-      overlay?.addEventListener(
-        "click",
-        closeSidebar
-      );
-
-
-      /* =======================================
-         SECTION SYSTEM
-      ======================================== */
-
-      function showSection(sectionName) {
-
-        const validSections = [
-          "overview",
-          "orders",
-          "messages",
-          "favorites",
-          "wallet",
-          "profile",
-          "support"
-        ];
-
-
-        if (
-          !validSections.includes(sectionName)
+        /*
+        ==========================================================
+        ELEMENTS
+        ==========================================================
+        */
+
+        const sidebar =
+          document.getElementById(
+            "dashboardSidebar"
+          );
+
+        const overlay =
+          document.getElementById(
+            "dashboardOverlay"
+          );
+
+        const mobileMenuButton =
+          document.getElementById(
+            "mobileMenuButton"
+          );
+
+        const sidebarClose =
+          document.getElementById(
+            "sidebarClose"
+          );
+
+        const navLinks =
+          document.querySelectorAll(
+            ".dashboard-nav-link"
+          );
+
+        const sections =
+          document.querySelectorAll(
+            ".dashboard-section"
+          );
+
+        const pageTitle =
+          document.getElementById(
+            "pageTitle"
+          );
+
+
+        /*
+        ==========================================================
+        HELPERS
+        ==========================================================
+        */
+
+        function setText(
+          id,
+          value
         ) {
 
-          sectionName = "overview";
+          const element =
+            document.getElementById(id);
+
+          if (element) {
+            element.textContent =
+              value ?? "";
+          }
 
         }
 
 
-        sections.forEach(section => {
+        function showError(
+          message
+        ) {
 
-          section.classList.remove(
-            "active"
-          );
-
-        });
-
-
-        const target =
-          document.getElementById(
-            `section-${sectionName}`
-          );
-
-
-        if (target) {
-
-          target.classList.add(
-            "active"
-          );
-
-        }
-
-
-        navLinks.forEach(link => {
-
-          link.classList.toggle(
-            "active",
-            link.dataset.section === sectionName
-          );
-
-        });
-
-
-        const titles = {
-          overview: "Overview",
-          orders: "My Orders",
-          messages: "Messages",
-          favorites: "Favorites",
-          wallet: "Wallet",
-          profile: "My Profile",
-          support: "Support"
-        };
-
-
-        if (pageTitle) {
-
-          pageTitle.textContent =
-            titles[sectionName] ||
-            "Dashboard";
-
-        }
-
-
-        window.history.replaceState(
-          null,
-          "",
-          `#${sectionName}`
-        );
-
-
-        closeSidebar();
-
-      }
-
-
-      navLinks.forEach(link => {
-
-        link.addEventListener(
-          "click",
-          event => {
-
-            event.preventDefault();
-
-            showSection(
-              link.dataset.section
+          const box =
+            document.getElementById(
+              "novaError"
             );
 
+          const success =
+            document.getElementById(
+              "novaSuccess"
+            );
+
+          if (success) {
+            success.style.display =
+              "none";
           }
-        );
 
-      });
+          if (box) {
 
+            box.textContent =
+              message;
 
-      document
-        .querySelectorAll(
-          "[data-section-target]"
-        )
-        .forEach(button => {
+            box.style.display =
+              "block";
 
-          button.addEventListener(
-            "click",
-            () => {
+          }
 
-              showSection(
-                button.dataset.sectionTarget
-              );
-
-            }
-          );
-
-        });
+        }
 
 
-      /* =======================================
-         INITIAL SECTION
-      ======================================== */
+        function showSuccess(
+          message
+        ) {
 
-      const initialSection =
-        window.location.hash
-          .replace("#", "")
-          .trim();
+          const box =
+            document.getElementById(
+              "novaSuccess"
+            );
 
+          const error =
+            document.getElementById(
+              "novaError"
+            );
 
-      showSection(
-        initialSection || "overview"
-      );
+          if (error) {
+            error.style.display =
+              "none";
+          }
 
+          if (box) {
 
-      /* =======================================
-         LOGOUT
-      ======================================== */
+            box.textContent =
+              message;
 
-      document
-        .querySelectorAll("[data-logout]")
-        .forEach(button => {
+            box.style.display =
+              "block";
 
-          button.addEventListener(
-            "click",
-            async () => {
+          }
 
-              button.disabled = true;
-              button.textContent =
-                "Logging out...";
-
-
-              const {
-                error
-              } =
-                await supabase.auth.signOut();
+        }
 
 
-              if (error) {
+        function escapeHtml(
+          value
+        ) {
 
-                console.error(
-                  "Logout error:",
-                  error
-                );
+          const div =
+            document.createElement(
+              "div"
+            );
 
-                button.disabled = false;
-                button.textContent =
-                  "Logout";
-
-                alert(
-                  "Could not log out. Please try again."
-                );
-
-                return;
-
-              }
-
-
-              window.location.href =
-                "../login.html";
-
-            }
-          );
-
-        });
-
-
-      /* =======================================
-         HELPERS
-      ======================================== */
-
-      function setText(
-        id,
-        value
-      ) {
-
-        const element =
-          document.getElementById(id);
-
-        if (element) {
-
-          element.textContent =
+          div.textContent =
             value ?? "";
 
+          return div.innerHTML;
+
         }
 
-      }
 
-
-      function getInitials(
-        first,
-        last,
-        fallbackEmail
-      ) {
-
-        const firstLetter =
-          first?.trim()?.charAt(0) || "";
-
-        const lastLetter =
-          last?.trim()?.charAt(0) || "";
-
-
-        if (
-          firstLetter ||
-          lastLetter
+        function getInitials(
+          first,
+          last,
+          email
         ) {
 
-          return (
-            firstLetter +
+          const firstLetter =
+            first?.trim()?.charAt(0) ||
+            "";
+
+          const lastLetter =
+            last?.trim()?.charAt(0) ||
+            "";
+
+          if (
+            firstLetter ||
             lastLetter
+          ) {
+
+            return (
+              firstLetter +
+              lastLetter
+            ).toUpperCase();
+
+          }
+
+          return (
+            email?.charAt(0) ||
+            "U"
           ).toUpperCase();
 
         }
 
 
-        return (
-          fallbackEmail
-            ?.charAt(0) ||
-          "U"
-        ).toUpperCase();
+        function setAvatar(
+          id,
+          initials,
+          avatarUrl
+        ) {
 
-      }
+          const element =
+            document.getElementById(id);
 
+          if (!element) {
+            return;
+          }
 
-      function setAvatar(
-        id,
-        initials,
-        avatarUrl
-      ) {
+          if (avatarUrl) {
 
-        const element =
-          document.getElementById(id);
+            element.style.backgroundImage =
+              `url("${avatarUrl}")`;
 
-        if (!element) return;
+            element.style.backgroundSize =
+              "cover";
 
+            element.style.backgroundPosition =
+              "center";
 
-        if (avatarUrl) {
+            element.textContent =
+              "";
 
-          element.style.backgroundImage =
-            `url("${avatarUrl}")`;
+          } else {
 
-          element.style.backgroundSize =
-            "cover";
+            element.style.backgroundImage =
+              "none";
 
-          element.style.backgroundPosition =
-            "center";
+            element.textContent =
+              initials;
 
-          element.textContent = "";
-
-        } else {
-
-          element.style.backgroundImage =
-            "none";
-
-          element.textContent =
-            initials;
+          }
 
         }
 
+
+        function formatPrice(
+          value
+        ) {
+
+          return new Intl.NumberFormat(
+            "en-US",
+            {
+              style: "currency",
+              currency: "USD"
+            }
+          ).format(
+            Number(value || 0)
+          );
+
+        }
+
+
+        function formatDate(
+          value
+        ) {
+
+          if (!value) {
+            return "—";
+          }
+
+          return new Date(
+            value
+          ).toLocaleDateString(
+            undefined,
+            {
+              year: "numeric",
+              month: "short",
+              day: "numeric"
+            }
+          );
+
+        }
+
+
+        function statusClass(
+          status
+        ) {
+
+          return String(
+            status || "pending"
+          )
+          .toLowerCase()
+          .replace(
+            /\s+/g,
+            "_"
+          );
+
+        }
+
+
+        /*
+        ==========================================================
+        AUTH
+        ==========================================================
+        */
+
+        const {
+          data: sessionData,
+          error: sessionError
+        } =
+          await supabase.auth.getSession();
+
+
+        if (
+          sessionError
+        ) {
+
+          console.error(
+            "Session error:",
+            sessionError
+          );
+
+          window.location.href =
+            "../login.html?redirect=client/dashboard.html";
+
+          return;
+
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Do NOT sign out here.
+         *
+         * If a valid Supabase session exists,
+         * keep the user inside the dashboard.
+         */
+
+        if (
+          !sessionData ||
+          !sessionData.session
+        ) {
+
+          window.location.href =
+            "../login.html?redirect=client/dashboard.html";
+
+          return;
+
+        }
+
+
+        const user =
+          sessionData.session.user;
+
+
+        /*
+        ==========================================================
+        PROFILE
+        ==========================================================
+        */
+
+        const {
+          data: profile,
+          error: profileError
+        } =
+          await supabase
+            .from("profiles")
+            .select(`
+              id,
+              first_name,
+              last_name,
+              email,
+              avatar_url,
+              phone,
+              country,
+              is_email_verified,
+              is_active,
+              role_id,
+              roles (
+                name
+              )
+            `)
+            .eq(
+              "id",
+              user.id
+            )
+            .single();
+
+
+        if (
+          profileError ||
+          !profile
+        ) {
+
+          console.error(
+            "Profile error:",
+            profileError
+          );
+
+          /*
+           * Do not immediately sign out.
+           *
+           * This prevents the dashboard from
+           * throwing the user back to login
+           * because of a temporary profile/RLS
+           * problem.
+           */
+
+          showError(
+            "Your session is active, but your NOVA profile could not be loaded."
+          );
+
+          return;
+
+        }
+
+
+        /*
+        ==========================================================
+        ACCOUNT STATUS
+        ==========================================================
+        */
+
+        if (
+          profile.is_active === false
+        ) {
+
+          await supabase.auth.signOut();
+
+          window.location.href =
+            "../login.html?disabled=1";
+
+          return;
+
+        }
+
+
+        /*
+        ==========================================================
+        ROLE
+        ==========================================================
+        */
+
+        const role =
+          profile.roles?.name ||
+          "client";
+
+
+        if (
+          role !== "client"
+        ) {
+
+          if (
+            role === "worker"
+          ) {
+
+            window.location.href =
+              "../worker/dashboard.html";
+
+          } else if (
+            role === "admin"
+          ) {
+
+            window.location.href =
+              "../admin/dashboard.html";
+
+          } else {
+
+            showError(
+              "Your account role is not configured correctly."
+            );
+
+          }
+
+          return;
+
+        }
+
+
+        /*
+        ==========================================================
+        USER DATA
+        ==========================================================
+        */
+
+        const firstName =
+          profile.first_name ||
+          user.user_metadata?.first_name ||
+          "User";
+
+        const lastName =
+          profile.last_name ||
+          user.user_metadata?.last_name ||
+          "";
+
+        const fullName =
+          `${firstName} ${lastName}`
+            .trim();
+
+        const email =
+          profile.email ||
+          user.email ||
+          "";
+
+        const initials =
+          getInitials(
+            firstName,
+            lastName,
+            email
+          );
+
+
+        /*
+        ==========================================================
+        UPDATE UI
+        ==========================================================
+        */
+
+        setText(
+          "sidebarUserName",
+          fullName
+        );
+
+        setText(
+          "sidebarUserEmail",
+          email
+        );
+
+        setText(
+          "topbarUserName",
+          fullName
+        );
+
+        setText(
+          "welcomeName",
+          firstName
+        );
+
+        setText(
+          "profileSummaryName",
+          fullName
+        );
+
+        setText(
+          "profileSummaryEmail",
+          email
+        );
+
+        setText(
+          "profileFullName",
+          fullName
+        );
+
+        setText(
+          "profileEmail",
+          email
+        );
+
+        setText(
+          "profileFirstName",
+          firstName
+        );
+
+        setText(
+          "profileLastName",
+          lastName
+        );
+
+        setText(
+          "profileEmailDetail",
+          email
+        );
+
+        setText(
+          "profileCountry",
+          profile.country ||
+          "Not set"
+        );
+
+
+        /*
+        ==========================================================
+        EMAIL VERIFICATION
+        ==========================================================
+        */
+
+        const emailVerified =
+          profile.is_email_verified ||
+          !!user.email_confirmed_at;
+
+        setText(
+          "profileVerification",
+          emailVerified
+            ? "Verified ✓"
+            : "Not verified"
+        );
+
+
+        /*
+        ==========================================================
+        AVATARS
+        ==========================================================
+        */
+
+        setAvatar(
+          "sidebarAvatar",
+          initials,
+          profile.avatar_url
+        );
+
+        setAvatar(
+          "topbarAvatar",
+          initials,
+          profile.avatar_url
+        );
+
+        setAvatar(
+          "profileSummaryAvatar",
+          initials,
+          profile.avatar_url
+        );
+
+        setAvatar(
+          "profileAvatar",
+          initials,
+          profile.avatar_url
+        );
+
+
+        setText(
+          "accountStatus",
+          profile.is_active
+            ? "Active"
+            : "Inactive"
+        );
+
+        setText(
+          "profileAccountStatus",
+          profile.is_active
+            ? "Active Account"
+            : "Inactive Account"
+        );
+
+
+        /*
+        ==========================================================
+        THEME
+        ==========================================================
+        */
+
+        const savedTheme =
+          localStorage.getItem(
+            "nova-theme"
+          );
+
+        if (
+          savedTheme === "light"
+        ) {
+
+          document.body.classList.add(
+            "light-theme"
+          );
+
+        }
+
+
+        const themeToggle =
+          document.getElementById(
+            "themeToggle"
+          );
+
+
+        if (themeToggle) {
+
+          themeToggle.addEventListener(
+            "click",
+            () => {
+
+              document.body.classList.toggle(
+                "light-theme"
+              );
+
+              const theme =
+                document.body.classList.contains(
+                  "light-theme"
+                )
+                  ? "light"
+                  : "dark";
+
+              localStorage.setItem(
+                "nova-theme",
+                theme
+              );
+
+            }
+          );
+
+        }
+
+
+        /*
+        ==========================================================
+        MOBILE SIDEBAR
+        ==========================================================
+        */
+
+        function openSidebar() {
+
+          sidebar?.classList.add(
+            "open"
+          );
+
+          overlay?.classList.add(
+            "open"
+          );
+
+        }
+
+
+        function closeSidebar() {
+
+          sidebar?.classList.remove(
+            "open"
+          );
+
+          overlay?.classList.remove(
+            "open"
+          );
+
+        }
+
+
+        mobileMenuButton?.addEventListener(
+          "click",
+          openSidebar
+        );
+
+        sidebarClose?.addEventListener(
+          "click",
+          closeSidebar
+        );
+
+        overlay?.addEventListener(
+          "click",
+          closeSidebar
+        );
+
+
+        /*
+        ==========================================================
+        SECTION SYSTEM
+        ==========================================================
+        */
+
+        function showSection(
+          sectionName
+        ) {
+
+          const validSections = [
+            "overview",
+            "orders",
+            "messages",
+            "favorites",
+            "wallet",
+            "profile",
+            "support"
+          ];
+
+
+          if (
+            !validSections.includes(
+              sectionName
+            )
+          ) {
+
+            sectionName =
+              "overview";
+
+          }
+
+
+          sections.forEach(
+            section => {
+
+              section.classList.remove(
+                "active"
+              );
+
+            }
+          );
+
+
+          const target =
+            document.getElementById(
+              `section-${sectionName}`
+            );
+
+
+          if (target) {
+
+            target.classList.add(
+              "active"
+            );
+
+          }
+
+
+          navLinks.forEach(
+            link => {
+
+              link.classList.toggle(
+                "active",
+                link.dataset.section ===
+                sectionName
+              );
+
+            }
+          );
+
+
+          const titles = {
+
+            overview:
+              "Overview",
+
+            orders:
+              "My Orders",
+
+            messages:
+              "Messages",
+
+            favorites:
+              "Favorites",
+
+            wallet:
+              "Wallet",
+
+            profile:
+              "My Profile",
+
+            support:
+              "Support"
+
+          };
+
+
+          if (pageTitle) {
+
+            pageTitle.textContent =
+              titles[sectionName] ||
+              "Dashboard";
+
+          }
+
+
+          window.history.replaceState(
+            null,
+            "",
+            `#${sectionName}`
+          );
+
+
+          closeSidebar();
+
+
+          if (
+            sectionName ===
+            "orders"
+          ) {
+
+            loadAllOrders();
+
+          }
+
+        }
+
+
+        navLinks.forEach(
+          link => {
+
+            link.addEventListener(
+              "click",
+              event => {
+
+                event.preventDefault();
+
+                showSection(
+                  link.dataset.section
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+        document
+          .querySelectorAll(
+            "[data-section-target]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  showSection(
+                    button.dataset.sectionTarget
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        /*
+        ==========================================================
+        LOAD ORDERS
+        ==========================================================
+        */
+
+        async function getMyOrders() {
+
+          const {
+            data,
+            error
+          } =
+            await supabase
+              .from("orders")
+              .select(`
+                id,
+                client_id,
+                worker_id,
+                service_id,
+                quantity,
+                total_amount,
+                status,
+                created_at,
+                services (
+                  title
+                )
+              `)
+              .eq(
+                "client_id",
+                user.id
+              )
+              .order(
+                "created_at",
+                {
+                  ascending: false
+                }
+              );
+
+          if (error) {
+            throw error;
+          }
+
+          return data || [];
+
+        }
+
+
+        function renderOrders(
+          orders,
+          containerId,
+          emptyId
+        ) {
+
+          const container =
+            document.getElementById(
+              containerId
+            );
+
+          const empty =
+            document.getElementById(
+              emptyId
+            );
+
+          if (!container) {
+            return;
+          }
+
+
+          container.innerHTML =
+            "";
+
+
+          if (
+            !orders.length
+          ) {
+
+            if (empty) {
+              empty.style.display =
+                "block";
+            }
+
+            return;
+
+          }
+
+
+          if (empty) {
+            empty.style.display =
+              "none";
+          }
+
+
+          orders.forEach(
+            order => {
+
+              const title =
+                order.services?.title ||
+                "NOVA Service";
+
+              const card =
+                document.createElement(
+                  "div"
+                );
+
+              card.className =
+                "nova-order-card";
+
+
+              card.innerHTML = `
+
+                <div class="nova-order-left">
+
+                  <div class="nova-order-title">
+                    ${escapeHtml(title)}
+                  </div>
+
+                  <div class="nova-order-id">
+                    Order #${escapeHtml(
+                      String(order.id)
+                        .slice(0, 8)
+                    )}
+                  </div>
+
+                  <div class="nova-order-meta">
+
+                    <span class="nova-order-tag">
+                      📅 ${formatDate(
+                        order.created_at
+                      )}
+                    </span>
+
+                    <span class="nova-order-tag">
+                      📦 Qty:
+                      ${Number(
+                        order.quantity || 1
+                      )}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div class="nova-order-right">
+
+                  <div class="nova-order-price">
+                    ${formatPrice(
+                      order.total_amount
+                    )}
+                  </div>
+
+                  <span
+                    class="nova-status ${statusClass(
+                      order.status
+                    )}"
+                  >
+                    ${escapeHtml(
+                      String(
+                        order.status ||
+                        "pending"
+                      ).replaceAll(
+                        "_",
+                        " "
+                      )
+                    )}
+                  </span>
+
+                </div>
+
+              `;
+
+
+              container.appendChild(
+                card
+              );
+
+            }
+          );
+
+        }
+
+
+        async function loadDashboardOrders() {
+
+          try {
+
+            const loading =
+              document.getElementById(
+                "recentOrdersLoading"
+              );
+
+            if (loading) {
+              loading.style.display =
+                "block";
+            }
+
+
+            const orders =
+              await getMyOrders();
+
+
+            setText(
+              "totalOrders",
+              orders.length
+            );
+
+
+            const activeStatuses = [
+              "pending",
+              "paid",
+              "in_progress",
+              "delivered"
+            ];
+
+
+            const active =
+              orders.filter(
+                order =>
+                  activeStatuses.includes(
+                    order.status
+                  )
+              );
+
+
+            const completed =
+              orders.filter(
+                order =>
+                  order.status ===
+                  "completed"
+              );
+
+
+            setText(
+              "activeOrders",
+              active.length
+            );
+
+
+            setText(
+              "completedOrders",
+              completed.length
+            );
+
+
+            renderOrders(
+              orders.slice(0, 5),
+              "recentOrdersList",
+              "recentOrdersEmpty"
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              "Dashboard orders error:",
+              error
+            );
+
+            showError(
+              "Could not load your orders."
+            );
+
+          } finally {
+
+            const loading =
+              document.getElementById(
+                "recentOrdersLoading"
+              );
+
+            if (loading) {
+              loading.style.display =
+                "none";
+            }
+
+          }
+
+        }
+
+
+        async function loadAllOrders() {
+
+          try {
+
+            const loading =
+              document.getElementById(
+                "allOrdersLoading"
+              );
+
+            if (loading) {
+              loading.style.display =
+                "block";
+            }
+
+
+            const orders =
+              await getMyOrders();
+
+
+            renderOrders(
+              orders,
+              "allOrdersList",
+              "allOrdersEmpty"
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              "All orders error:",
+              error
+            );
+
+            showError(
+              "Could not load your orders."
+            );
+
+          } finally {
+
+            const loading =
+              document.getElementById(
+                "allOrdersLoading"
+              );
+
+            if (loading) {
+              loading.style.display =
+                "none";
+            }
+
+          }
+
+        }
+
+
+        /*
+        ==========================================================
+        WALLET
+        ==========================================================
+        */
+
+        async function loadWallet() {
+
+          /*
+           * If points/wallet tables do not exist yet,
+           * keep the UI at 0 instead of logging the
+           * user out.
+           */
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabase
+                .from("wallets")
+                .select(
+                  "balance"
+                )
+                .eq(
+                  "user_id",
+                  user.id
+                )
+                .maybeSingle();
+
+
+            if (
+              !error &&
+              data
+            ) {
+
+              const balance =
+                Number(
+                  data.balance || 0
+                );
+
+              setText(
+                "walletBalance",
+                `${balance.toFixed(2)} MAD`
+              );
+
+              setText(
+                "walletMainBalance",
+                `${balance.toFixed(2)} MAD`
+              );
+
+            }
+
+          } catch (error) {
+
+            console.warn(
+              "Wallet table not ready:",
+              error
+            );
+
+          }
+
+        }
+
+
+        /*
+        ==========================================================
+        REALTIME AUTH
+        ==========================================================
+        */
+
+        supabase.auth.onAuthStateChange(
+          (
+            event,
+            currentSession
+          ) => {
+
+            /*
+             * Only redirect when the session
+             * is genuinely gone.
+             *
+             * TOKEN_REFRESHED is NOT a logout.
+             */
+
+            if (
+              event === "SIGNED_OUT" ||
+              (
+                !currentSession &&
+                event !== "INITIAL_SESSION"
+              )
+            ) {
+
+              window.location.href =
+                "../login.html?redirect=client/dashboard.html";
+
+            }
+
+          }
+        );
+
+
+        /*
+        ==========================================================
+        LOGOUT
+        ==========================================================
+        */
+
+        document
+          .querySelectorAll(
+            "[data-logout]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                async () => {
+
+                  button.disabled =
+                    true;
+
+                  button.textContent =
+                    "Logging out...";
+
+
+                  const {
+                    error
+                  } =
+                    await supabase.auth.signOut();
+
+
+                  if (error) {
+
+                    console.error(
+                      "Logout error:",
+                      error
+                    );
+
+                    button.disabled =
+                      false;
+
+                    button.textContent =
+                      "Logout";
+
+                    showError(
+                      "Could not log out. Please try again."
+                    );
+
+                    return;
+
+                  }
+
+
+                  window.location.href =
+                    "../login.html";
+
+                }
+              );
+
+            }
+          );
+
+
+        /*
+        ==========================================================
+        SUPPORT BUTTONS
+        ==========================================================
+        */
+
+        [
+          "orderSupportButton",
+          "paymentSupportButton",
+          "contactSupportButton"
+        ]
+        .forEach(
+          id => {
+
+            document
+              .getElementById(id)
+              ?.addEventListener(
+                "click",
+                () => {
+
+                  showSuccess(
+                    "Support center will be connected to the NOVA ticket system next."
+                  );
+
+                }
+              );
+
+          }
+        );
+
+
+        /*
+        ==========================================================
+        INITIAL LOAD
+        ==========================================================
+        */
+
+        await loadDashboardOrders();
+
+        await loadWallet();
+
+
+        /*
+        ==========================================================
+        INITIAL SECTION
+        ==========================================================
+        */
+
+        const initialSection =
+          window.location.hash
+            .replace(
+              "#",
+              ""
+            )
+            .trim();
+
+
+        showSection(
+          initialSection ||
+          "overview"
+        );
+
+
+        console.log(
+          "NOVA Client Dashboard loaded:",
+          email
+        );
+
       }
-
-
-      console.log(
-        "NOVA Client Dashboard loaded for:",
-        email
-      );
-
-    });
-
+    );
   </script>
 
 </body>
